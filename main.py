@@ -1,9 +1,10 @@
 import re
 
 array = []
-with open("testing.txt", "r", encoding="utf-8") as file:
+with open("SG-1.txt", "r", encoding="utf-8") as file:
     textLine = file.readline()
     while textLine:
+        textLine = re.sub(r'http\S+', '', textLine)
         splitting = re.findall("[a-zA-Z']+", textLine)
         array = array + splitting
         textLine = file.readline()
@@ -11,7 +12,7 @@ print(array)
 print(len(array))
 
 array2 = []
-with open("Negative.txt", "r", encoding="utf-8") as file:
+with open("Positive.txt", "r", encoding="utf-8") as file:
     textLine = file.readline()
     while textLine:
         splitting = re.split(r",\s+", textLine)
