@@ -11,7 +11,7 @@ print(array)
 print(len(array))
 
 array2 = []
-with open("testing2(positive).txt", "r", encoding="utf-8") as file:
+with open("Negative.txt", "r", encoding="utf-8") as file:
     textLine = file.readline()
     while textLine:
         splitting = re.split(r",\s+", textLine)
@@ -24,7 +24,7 @@ for i in range(0, len(array2)):
 print(count)
 
 array3 = []
-with open("stop-words.txt", "r", encoding="utf-8") as file:
+with open("Stop.txt", "r", encoding="utf-8") as file:
     textLine = file.readline()
     while textLine:
         splitting = textLine.split();
