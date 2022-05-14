@@ -26,7 +26,7 @@ class Article:
         return unique
 
     # To remove all the repeated words extracted from the article (e.g., no 2 words, "good" occur in the array
-    # Time Complexity = O(N), where N = length of the array
+    # Time Complexity = O(N+1), where N = length of the array and 0(1) is when we search an element using "not in" in a set
     def removeRedundantWords(self, array):
         constArrayWord = []
         unique = set()
