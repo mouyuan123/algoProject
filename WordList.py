@@ -13,24 +13,29 @@ class WordList:
         sentiment = self.sentiment
         array = []
         # If the text file contains positive / negative words, the dealing method is same
-        if sentiment == "POSITIVE" or sentiment == "NEGATIVE":
+        if sentiment == "POSITIVE" or sentiment == "NEGATIVE" or sentiment == "NEUTRAL":
             with open(self.textFile, "r", encoding="utf-8") as file:
                 textLine = file.readline().lower()
                 splitting = re.split(r",\s+", textLine)
                 array = array + splitting
-                if sentiment == "POSITIVE":
-                    # Append all the positive words with "+"
-                    for i in range(0, len(array)):
-                        array[i] = array[i] + "+"
-                else:
-                    # Append all the negative words with "-"
-                    for i in range(0, len(array)):
-                        array[i] = array[i] + "-"
+            for i in range(len(array)):
+                array[i] = array[i].replace(" ", "")
+                # if sentiment == "POSITIVE":
+                #     # Append all the positive words with "+"
+                #     for i in range(0, len(array)):
+                #         array[i] = array[i] + "+"
+                # else:
+                #     # Append all the negative words with "-"
+                #     for i in range(0, len(array)):
+                #         array[i] = array[i] + "-"
         elif sentiment == "STOP":
             with open(self.textFile, "r", encoding="utf-8") as file:
                 textLine = file.readline().lower()
-                splitting = textLine.split()
-                array = array + splitting
+                while textLine:
+                    splitting = textLine.split()
+                    array = array + splitting
+                    textLine = file.readline().lower()
         else:
             print("Please insert valid input (POSITIVE / NEGATIVE / STOP)")
-        return array
+        uniqueWordList = set(array)  # So that we can retrieve the word in 0(1) instead of O(n) if array is used
+        return uniqueWordList
