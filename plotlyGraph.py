@@ -1,5 +1,4 @@
 import os.path
-
 import pandas as pd  # import and analyze data with high performance and productivity
 import numpy as np
 import chart_studio.plotly as py
@@ -30,14 +29,13 @@ def buil_csv_file(country, positiveFreq, negativeFreq, neutralFreuq):
         df.to_csv("graphAnalysis\\"+fileName, index=False)
 
 
-# buil_csv_file(1887, 1846, 887)
-# df = pd.read_csv("SG.csv")  # Use pandas to read our data file
-# #  Build "df" dataFrame to build the histogram
-# #  The title of the histogram = "Overview for Singapore"
-# #  Use values of "Sentiment" column as index in x-axis (x = 'Sentiment')
-# #  Use values of "Frequency" column as y-axis values (x = 'Frequency')
-# #  text_auto=True allows us to display the value on the histogram
-# fig = px.histogram(df, title="Overview for Singapore", x='Sentiment', y='Frequency', text_auto=True)
-# #  Define the gap between each bar
-# fig.update_layout(bargap=0.3, yaxis_title="Frequency")
-# fig.show()
+df = pd.read_csv("graphAnalysis\\SG.csv")  # Use pandas to read our data file
+#  Build "df" dataFrame to build the histogram
+#  The title of the histogram = "Overview for Singapore"
+#  Use values of "Sentiment" column as index in x-axis (x = 'Sentiment')
+#  Use values of "Frequency" column as y-axis values (x = 'Frequency')
+#  text_auto=True allows us to display the value on the histogram
+fig = px.histogram(df, title="Overview for Singapore", x='Sentiment', y='Frequency', text_auto=True)
+#  Define the gap between each bar
+fig.update_layout(bargap=0.3, yaxis_title="Frequency")
+fig.show()
