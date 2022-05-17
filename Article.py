@@ -4,7 +4,7 @@ import WordList
 
 class Article:
     articleCount = 0  # Define the number of articles used for the project
-    list = WordList.WordList("STOP", "Stop.txt")
+    list = WordList.WordList("STOP", "words\\Stop.txt")
     stopWordsList = list.wordList()
 
     #  Create instance of article

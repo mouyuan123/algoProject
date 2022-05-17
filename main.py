@@ -41,36 +41,60 @@ def justifySentiment(country, processedTxt, positiveList, negativeList, neutralL
 # To find out the most appropriate country to have store expansion based on the positive sentiments among countries
 def expandBranch(ranking):
     mostValuableCountry = ""
-    mostPositiveWords = 0
+    leastDifference = 0
     for country, sentiments in ranking.items():
         print("For "+country+", the overall positive words are "+str(sentiments[0])+" while the overall negative words are "+str(sentiments[1]))
-        if sentiments[0] > mostPositiveWords:
+        if sentiments[0] - sentiments[1] > leastDifference:
             mostValuableCountry = country
-            mostPositiveWords = sentiments[0]
-    print("In conclusion, " + mostValuableCountry + " is the worth having branch expansion as it has total of " + str(mostPositiveWords) + " positive words (the most positive sentiment)\n")
+            leastDifference = sentiments[0] - sentiments[1]
+    print("In conclusion, " + mostValuableCountry + " is the worth having branch expansion as it has the least difference, " + str(leastDifference) + " between overall positive and negative words\n")
 
 
 # Build an array of positive words using WordList class
-positiveWordsList = listofWords("POSITIVE", "Positive.txt")
+positiveWordsList = listofWords("POSITIVE", "words\\Positive.txt")
 # Build an array of negative words using WordList class
-negativeWordsList = listofWords("NEGATIVE", "Negative.txt")
+negativeWordsList = listofWords("NEGATIVE", "words\\Negative.txt")
 # Build an array of negative words using WordList class
-neutralWordsList = listofWords("NEUTRAL", "Neutral.txt")
+neutralWordsList = listofWords("NEUTRAL", "words\\Neutral.txt")
 # Build a dictionary to store the overall number of positive and negative words of each country for ranking
 # The index 0 store the amount of positive words & the index 1 store the amount of negative words
 rank = {"Malaysia": [0, 0],
-        "United States": [0, 0],
+        "United State": [0, 0],
         "Singapore": [0, 0],
         "Taiwan": [0, 0],
         "Japan": [0, 0]
         }
 # Store the 25 articles in an array before processing
 articles = [
-    ["Singapore", "SG-1.txt", "Getting Singapore in shape: Economic challenges and how to meet them"],
-    ["Singapore", "SG-2.txt", "Economic Development and Social Integration: Singapore’s Evolving Social Compact"],
-    ["Singapore", "SG-3.txt", "Singapore’s economic situation is ‘dire’ as global coronavirus resurgence looms, central bank says"],
-    ["Singapore", "SG-4.txt", "Singapore economy grows 3.4% in Q1, slower than previous quarter"],
-    ["Singapore", "SG-5.txt", "Singapore's economic growth to hit 3% to 5% in 2022; inflation still a pressing concern"]
+    ["Singapore", "articles\\SG-1.txt", "Getting Singapore in shape: Economic challenges and how to meet them"],
+    ["Singapore", "articles\\SG-2.txt", "Economic Development and Social Integration: Singapore’s Evolving Social Compact"],
+    ["Singapore", "articles\\SG-3.txt", "Singapore’s economic situation is ‘dire’ as global coronavirus resurgence looms, central bank says"],
+    ["Singapore", "articles\\SG-4.txt", "Singapore economy grows 3.4% in Q1, slower than previous quarter"],
+    ["Singapore", "articles\\SG-5.txt", "Singapore's economic growth to hit 3% to 5% in 2022; inflation still a pressing concern"],
+
+    ["Malaysia", "articles\\MY-1.txt", "Key Statistics of Labour Force in Malaysia, January 2022"],
+    ["Malaysia", "articles\\MY-2.txt", "A Full Guide on Safety in Malaysia"],
+    ["Malaysia", "articles\\MY-3.txt", "OECD forecasts Malaysia economy to grow 6% in 2022"],
+    ["Malaysia", "articles\\MY-4.txt", "Malaysia's economy to grow strongly in 2022, says Amro"],
+    ["Malaysia", "articles\\MY-5.txt", "Socio-Economic Research Centre: A better year in 2022 for Malaysian economy"],
+
+    ["United State", "articles\\US-1.txt", "Most Americans Say the Current Economy Is Helping the Rich, Hurting the Poor and Middle Class"],
+    ["United State", "articles\\US-2.txt", "The rapid growth the U.S. economy has seen is about to hit a wall"],
+    ["United State", "articles\\US-3.txt", "U.S. Economic Outlook"],
+    ["United State", "articles\\US-4.txt", "If the Economy Is Doing So Well, Why Does It Feel Like a Disaster?"],
+    ["United State", "articles\\US-5.txt", "The Economic Situation, March 2022"],
+
+    ["Taiwan", "articles\\TW-1.txt", "Taiwan’s inflation rate reaches 3.38% in April"],
+    ["Taiwan", "articles\\TW-2.txt", "Food/beverage sales for 2021 affected by COVID-19, down over 6%"],
+    ["Taiwan", "articles\\TW-3.txt", "Taiwan Faces Largest COVID-19 Outbreak Yet"],
+    ["Taiwan", "articles\\TW-4.txt", "Taiwan will not 'cruelly' lock down like China: premier"],
+    ["Taiwan", "articles\\TW-5.txt", "Taiwan Economics in Brief – May 2022"],
+
+    ["Japan", "articles\\JP-1.txt", "The societal pressures that shape Japan"],
+    ["Japan", "articles\\JP-2.txt", "Japan headed for uneven recovery in the first half"],
+    ["Japan", "articles\\JP-3.txt", "3 Economic Challenges Facing Japan in 2022"],
+    ["Japan", "articles\\JP-4.txt", "JAPAN: ECONOMIC AND POLITICAL OUTLINE"],
+    ["Japan", "articles\\JP-5.txt", "Japan's Economy and Its Impact on the U.S. Economy"]
 ]
 # Process the 25 articles we found to find the most appropriate country to expan branch
 for numOfArticle in range(len(articles)):
