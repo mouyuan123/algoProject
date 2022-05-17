@@ -1,8 +1,10 @@
+import os
 import re
 import Article  # Import the class we created here to create its instances
 import CompressedTrie
 import AhoCorasick
 import WordList
+import plotlyGraph
 
 
 # Build array of positive, negative and neutral words
@@ -28,6 +30,7 @@ def justifySentiment(country, processedTxt, positiveList, negativeList, neutralL
     AhoCorasick.clear_Trie()
     dictionary[country][0] = dictionary[country][0] + positveNo  # Accumulate the positive words of the country
     dictionary[country][1] = dictionary[country][1] + negativeNo  # Accumulate the negative words of the country
+    dictionary[country][2] = dictionary[country][2] + neutralNo  # Accumulate the neutral words of the country
     print("The length of text (excluding stop words) in the article: " + str(len(processedTxt)))
     print("Total positive words in this article: " + str(positveNo) + "\n" + "Total negative words in this article: " + str(negativeNo)+"\n" + "Total neutral words in this article: " + str(neutralNo))
     if positveNo > negativeNo:
@@ -57,12 +60,12 @@ negativeWordsList = listofWords("NEGATIVE", "words\\Negative.txt")
 # Build an array of negative words using WordList class
 neutralWordsList = listofWords("NEUTRAL", "words\\Neutral.txt")
 # Build a dictionary to store the overall number of positive and negative words of each country for ranking
-# The index 0 store the amount of positive words & the index 1 store the amount of negative words
-rank = {"Malaysia": [0, 0],
-        "United State": [0, 0],
-        "Singapore": [0, 0],
-        "Taiwan": [0, 0],
-        "Japan": [0, 0]
+# The index 0 store the amount of positive words & the index 1 store the amount of negative words & the index 2 store the amount of neutral words
+rank = {"Malaysia": [0, 0, 0],
+        "United State": [0, 0, 0],
+        "Singapore": [0, 0, 0],
+        "Taiwan": [0, 0, 0],
+        "Japan": [0, 0, 0]
         }
 # Store the 25 articles in an array before processing
 articles = [
@@ -102,6 +105,11 @@ for numOfArticle in range(len(articles)):
 
 # Find out the most worth country to have the store expansion according to the positive & negative sentiment
 expandBranch(rank)
+
+# Import the data of positive, negative and neutral words as .csv file to build chart
+#  Data needed in sequence: country name, overall positive words, overall negative words, overall neutral words
+for i, j in rank.items():
+    plotlyGraph.buil_csv_file(i, j[0], j[1], j[2])
 
 print("However, it is also necessary for us to check the distributed geographical locations in the country\nto determine" +
       " the local distributed centre in the country to optimize the delivery cost if we want expand our stores in that country")
