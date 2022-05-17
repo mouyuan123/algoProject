@@ -81,22 +81,3 @@ expandBranch(rank)
 
 print("However, it is also necessary for us to check the distributed geographical locations in the country\nto determine" +
       " the local distributed centre in the country to optimize the delivery cost if we want expand our stores in that country")
-
-# compressedTrie = CompressedTrie.CompressedTrie()
-# for i in range(0, len(positiveWordsList)):
-#     compressedTrie.insert(positiveWordsList[i], "+")
-# for i in range(0, len(negativeWordsList)):
-#     compressedTrie.insert(negativeWordsList[i], "-")
-# for i in range(0, len(positiveWordsList)):
-#     print(compressedTrie.search(positiveWordsList[i]))
-# for i in range(0, len(negativeWordsList)):
-#     print(compressedTrie.search(negativeWordsList[i]))
-# compressedTrie.insert('dog', '+')
-# compressedTrie.insert('dock', '+')
-# compressedTrie.insert('doggie', '-')
-# # compressedTrie.insert('dock')
-# # compressedTrie.insert('dead')
-# print(compressedTrie._data)
-# print(compressedTrie.search('dog'))
-# print(compressedTrie.search('dock'))
-# print(compressedTrie.search('doggie'))
