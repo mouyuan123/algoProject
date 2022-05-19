@@ -1,7 +1,7 @@
 import Article  # Import the class we created here to create its instances
 import AhoCorasick
 import WordList
-import testing
+import plotlyDash
 
 
 # Build array of positive, negative and neutral words
@@ -105,8 +105,8 @@ for numOfArticle in range(len(articles)):
 expandBranch(rank)
 
 
-testing.build_csv_file(rank)
-testing.build()
+plotlyDash.build_csv_file(rank)
+plotlyDash.build()
 
 
 print("However, it is also necessary for us to check the distributed geographical locations in the country\nto determine" +
