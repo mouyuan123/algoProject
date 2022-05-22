@@ -13,6 +13,7 @@ import numpy as np
 import plotly.graph_objs as go
 import pandas as pd
 from dash import Input, Output, dcc, html
+from plotly.subplots import make_subplots
 
 dataFrame = {}  # Store the dictionary to be used in DataFrame
 sentimentList = ["Positive", "Negative", "Neutral"]
@@ -123,7 +124,7 @@ def build():
     def get_graph(country):
         if country is None:
             return go.Figure()
-        elif country == 'All':
+        elif country == 'All (Group Bar Chart)':
             d = go.Figure()
             d.add_trace(go.Bar(x=sentimentList,
                                y=dFrame['Malaysia'],
@@ -141,6 +142,40 @@ def build():
                                y=dFrame["Taiwan"],
                                name='Taiwan'))
             return updateLayout(d)
+        elif country == 'All (Pie Chart)':
+            pie = pd.DataFrame(
+                {"countryName": ['Malaysia', 'Singapore', 'United States', 'Japan', 'Taiwan'],
+                    "value1": [dataFrame['Malaysia'][sentimentList[0]],
+                                     dataFrame['Singapore'][sentimentList[0]],
+                                     dataFrame['United State'][sentimentList[0]],
+                                     dataFrame['Japan'][sentimentList[0]],
+                                     dataFrame['Taiwan'][sentimentList[0]]],
+                    "value2": [dataFrame['Malaysia'][sentimentList[1]],
+                                    dataFrame['Singapore'][sentimentList[1]],
+                                    dataFrame['United State'][sentimentList[1]],
+                                    dataFrame['Japan'][sentimentList[1]],
+                                    dataFrame['Taiwan'][sentimentList[1]]],
+                    "value3": [dataFrame['Malaysia'][sentimentList[2]],
+                                dataFrame['Singapore'][sentimentList[2]],
+                                dataFrame['United State'][sentimentList[2]],
+                                dataFrame['Japan'][sentimentList[2]],
+                                dataFrame['Taiwan'][sentimentList[2]]]
+                 })
+            fig = make_subplots(rows=1, cols=3, specs=[[{'type': 'domain'}, {'type': 'domain'}, {'type': 'domain'}]])
+            fig = fig.add_trace(go.Pie(labels=pie.countryName, values=pie.value1, textinfo='label+percent', insidetextorientation='radial'), 1, 1)
+            fig.add_trace(go.Pie(labels=pie.countryName, values=pie.value2, textinfo='label+percent', insidetextorientation='radial'), 1, 2)
+            fig.add_trace(go.Pie(labels=pie.countryName, values=pie.value3, textinfo='label+percent', insidetextorientation='radial'), 1, 3)
+
+            # Create donut pie chart using 'hole'
+            fig.update_traces(hole=.4, hoverinfo="label+value")
+
+            fig.update_layout(
+                title_text="Percentage of Positive, Negative, and Neutral Words For Each Country",
+                # Add title in the center of the donut pies.
+                annotations=[dict(text='Positive words', x=0.10, y=0.5, font_size=15, showarrow=False),
+                             dict(text='Negative words', x=0.50, y=0.5, font_size=15, showarrow=False),
+                             dict(text='Neutral words', x=0.90, y=0.5, font_size=15, showarrow=False)])
+            return fig
         else:
             figure = go.Figure().add_trace(go.Bar(x=sentimentList,
                                                   y=dFrame[country],
@@ -162,7 +197,8 @@ def build():
                 dcc.Dropdown(
                     id='countryName',
                     options=[
-                        {'label': 'All', 'value': 'All'},
+                        {'label': 'All (Group Bar Chart)', 'value': 'All (Group Bar Chart)'},
+                        {'label': 'All (Pie Chart)', 'value': 'All (Pie Chart)'},
                         {'label': 'Malaysia', 'value': 'Malaysia'},
                         {'label': 'Singapore', 'value': 'Singapore'},
                         {'label': 'United State', 'value': 'United State'},
