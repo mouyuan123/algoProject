@@ -205,7 +205,7 @@ def build():
                         {'label': 'Japan', 'value': 'Japan'},
                         {'label': 'Taiwan', 'value': 'Taiwan'}
                     ],
-                    value='All',
+                    value='All (Group Bar Chart)',
                     style={'width': '50%',
                            'margin': '20px auto 0px auto'}
                 ),
