@@ -65,7 +65,7 @@ layout = go.Layout(
 def get_bar_chart(analysis):
     barChart = dcc.Graph(figure=go.Figure(layout=layout).add_trace(go.Bar(x=analysis['country'],
                                                                           y=analysis['differences'],
-                                                                          marker=dict(color='#351e15'))).update_layout(
+                                                                          marker=dict(color='#2F8F9D'))).update_layout(
         title='Differences of Word Frequency', plot_bgcolor='rgba(0,0,0,0)'),
         style={'width': '50%', 'height': '70vh', 'display': 'inline-block'})
     return barChart
@@ -75,7 +75,7 @@ def get_line_chart(analysis):
     lineChart = dcc.Graph(figure=go.Figure(layout=layout).add_trace(go.Scatter(x=analysis['country'],
                                                                                y=analysis['length of words'],
                                                                                marker=dict(
-                                                                               color='#351e15'))).update_layout(
+                                                                               color='#2F8F9D'))).update_layout(
         title='Total Number of Words', plot_bgcolor='rgba(0,0,0,0)'),
         style={'width': '50%', 'height': '70vh', 'display': 'inline-block'})
     return lineChart
