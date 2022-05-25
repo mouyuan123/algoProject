@@ -2,7 +2,8 @@ import Article  # Import the class we created here to create its instances
 import AhoCorasick
 import WordList
 import plotlyDash
-
+import pandas as pd # Import the excel files
+import requests
 
 # Build array of positive, negative and neutral words
 def listofWords(sentiment, wordTxt):
@@ -111,3 +112,66 @@ plotlyDash.build()
 
 print("However, it is also necessary for us to check the distributed geographical locations in the country\nto determine" +
       " the local distributed centre in the country to optimize the delivery cost if we want expand our stores in that country")
+
+
+# Files of every targeted country to expand the business
+targetFiles = [r'C:\Users\user\Documents\Moonbucks Expand Targets\MY.xlsx',
+               r'C:\Users\user\Documents\Moonbucks Expand Targets\US.xlsx',
+               r'C:\Users\user\Documents\Moonbucks Expand Targets\SG.xlsx',
+               r'C:\Users\user\Documents\Moonbucks Expand Targets\TW.xlsx',
+               r'C:\Users\user\Documents\Moonbucks Expand Targets\JP.xlsx'
+               ]
+
+# An object class used to store the information of the distribution centre
+class distributionCentres:
+    def __init__(self, nation, addr, coor, vecD):
+        self.nation = nation
+        self.addr = addr
+        self.coor = coor
+        self.vecD = vecD
+
+    def result(self):
+        print("Suitable Distribution center in ", self.nation, ": \n", self.addr, "\nCoordinate : \n [",self.coor, "]", "\nVector distance : \n [", "%.1f" % self.vecD, "km ]")
+
+def distanceSum(des, API_key):
+    sum = 0
+    min = 99999
+    i = 0
+    while i < des.size:
+        for destination in des:
+            url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins="+ str(des[i].split(", ")[0])+ "%2C" + str(des[i].split(", ")[1]) + \
+                  "&destinations=" + str(destination.split(", ")[0]) + "%2C" + str(destination.split(", ")[1]) + "&key=" + API_key
+
+            payload = {}
+            headers = {}
+
+            response = requests.request("GET", url, headers=headers, data=payload)
+            distance = response.json().get("rows")[0].get("elements")[0].get("distance").get("text") # Retrieve only the required distance data
+            value = distance.split(" ")
+            sum += float(value[0].replace(',', '')) # Sum up to find the vector distance for each location
+
+        if sum < min:
+            min = sum
+            min_coor = des[i]
+            centre = response.json().get("origin_addresses")
+
+        i+=1
+        sum = 0
+    selectedCentre = distributionCentres(data.Nationality[0], centre, min_coor, min)
+    return selectedCentre
+
+i = 0
+finalResult = []
+for i in range(len(targetFiles)):
+    data = pd.read_excel(targetFiles[i])
+    des = data.Coordinates
+    API_key = 'AIzaSyBKY4xH1CzfE_BjJ4IDFo-5dboz1qJTWvc'
+    location = distanceSum(des, API_key)
+    finalResult.append(location) # Store all resulting distribution centre in each country into a list
+
+print("All centres coordinates : \n")
+print(f"{'Country' :<20} Coordinates")
+print("---------------------------------------------")
+for a in finalResult:
+    print(f"{a.nation :<20} {a.coor}")
+
