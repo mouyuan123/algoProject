@@ -76,13 +76,15 @@ def set_fail_transitions():
     while q:
         r = q.popleft()
         for child in AdjList[r]["next_states"]:
-            q.append(child)
-            state = AdjList[r]["fail_state"]
+            q.append(child) # Appending the next_state child
+            state = AdjList[r]["fail_state"]  # Check the failure state of the previous character
             while find_next_state(state, AdjList[child]["value"]) is None and state != 0:
                 state = AdjList[state]["fail_state"]
             AdjList[child]["fail_state"] = find_next_state(state, AdjList[child]["value"])
             if AdjList[child]["fail_state"] is None:
                 AdjList[child]["fail_state"] = 0
+            """ Append the output of a word with the word which is the suffix of that word """
+            # E.g., "he" is also found in "she", so output of "she" = ["she", "he"] to imply that whenever a "she" is found, "he" is also found
             AdjList[child]["output"] = AdjList[child]["output"] + AdjList[AdjList[child]["fail_state"]]["output"]
 
 
