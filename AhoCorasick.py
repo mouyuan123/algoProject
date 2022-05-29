@@ -74,7 +74,7 @@ def set_fail_transitions():
         AdjList[node]["fail_state"] = 0
     """ Here, we use a BFS to build the failure state of each node """
     while q:
-        r = q.popleft()
+        r = q.popleft() # r is the parent / character that occurs before the "child"
         for child in AdjList[r]["next_states"]:
             q.append(child) # Appending the next_state child
             state = AdjList[r]["fail_state"]  # Check the failure state of the previous character
