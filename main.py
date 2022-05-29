@@ -1,9 +1,12 @@
+import operator
+
 import Article  # Import the class we created here to create its instances
 import AhoCorasick
 import WordList
 import plotlyDash
-import pandas as pd # Import the excel files
+import pandas as pd  # Import the excel files
 import requests
+
 
 # Build array of positive, negative and neutral words
 def listofWords(sentiment, wordTxt):
@@ -31,13 +34,18 @@ def justifySentiment(country, processedTxt, positiveList, negativeList, neutralL
     dictionary[country][2] = dictionary[country][2] + neutralNo  # Accumulate the neutral words of the country
     dictionary[country][3] = dictionary[country][3] + len(processedTxt)  # Accumulate length of each article
     print("The length of text (excluding stop words) in the article: " + str(len(processedTxt)))
-    print("Total positive words in this article: " + str(positveNo) + "\n" + "Total negative words in this article: " + str(negativeNo)+"\n" + "Total neutral words in this article: " + str(neutralNo))
+    print("Total positive words in this article: " + str(
+        positveNo) + "\n" + "Total negative words in this article: " + str(
+        negativeNo) + "\n" + "Total neutral words in this article: " + str(neutralNo))
     if positveNo > negativeNo:
-        print("Since the positive words is more than the negative words, this article gives "+country+" a positive sentiment\n")
+        print(
+            "Since the positive words is more than the negative words, this article gives " + country + " a positive sentiment\n")
     elif positveNo < negativeNo:
-        print("Since the negative words is more than the positive words, this article gives " + country + " a negative sentiment\n")
+        print(
+            "Since the negative words is more than the positive words, this article gives " + country + " a negative sentiment\n")
     else:
-        print("Since the positive words and the negative words are equal, this article gives " + country + " a neutral sentiment\n")
+        print(
+            "Since the positive words and the negative words are equal, this article gives " + country + " a neutral sentiment\n")
 
 
 # To find out the most appropriate country to have store expansion based on the positive sentiments among countries
@@ -45,11 +53,28 @@ def expandBranch(ranking):
     mostValuableCountry = ""
     leastDifference = 0
     for country, sentiments in ranking.items():
-        print("For "+country+", the overall positive words are "+str(sentiments[0])+" while the overall negative words are "+str(sentiments[1]))
+        print("For " + country + ", the overall positive words are " + str(
+            sentiments[0]) + " while the overall negative words are " + str(sentiments[1]))
         if sentiments[0] - sentiments[1] > leastDifference:
             mostValuableCountry = country
             leastDifference = sentiments[0] - sentiments[1]
-    print("In conclusion, " + mostValuableCountry + " is the worth having branch expansion as it has the least difference, " + str(leastDifference) + " between overall positive and negative words\n")
+    print(
+        "As a result, " + mostValuableCountry + " is the worth having branch expansion as it has the least difference, " + str(
+            leastDifference) + " between overall positive and negative words\n")
+
+
+# To find out the most appropriate country to have store expansion based on the positive sentiments among countries
+def rankingOfCountry(ranking):
+    rank = {}
+    for country, sentiments in ranking.items():
+        rank[country] = sentiments[0] - sentiments[1]
+    sorted_rank = dict(sorted(rank.items(), key=operator.itemgetter(1), reverse=True))
+    i = 1
+    print("......................................................")
+    for country, difference in sorted_rank.items():
+        print(str(i) + ". " + country + ": " + str(difference))
+        i = i + 1
+    print("......................................................")
 
 
 # Build an array of positive words using WordList class
@@ -69,10 +94,13 @@ rank = {"Malaysia": [0, 0, 0, 0],
 # Store the 25 articles in an array before processing
 articles = [
     ["Singapore", "articles\\SG-1.txt", "Getting Singapore in shape: Economic challenges and how to meet them"],
-    ["Singapore", "articles\\SG-2.txt", "Economic Development and Social Integration: Singapore’s Evolving Social Compact"],
-    ["Singapore", "articles\\SG-3.txt", "Singapore’s economic situation is ‘dire’ as global coronavirus resurgence looms, central bank says"],
+    ["Singapore", "articles\\SG-2.txt",
+     "Economic Development and Social Integration: Singapore’s Evolving Social Compact"],
+    ["Singapore", "articles\\SG-3.txt",
+     "Singapore’s economic situation is ‘dire’ as global coronavirus resurgence looms, central bank says"],
     ["Singapore", "articles\\SG-4.txt", "Singapore economy grows 3.4% in Q1, slower than previous quarter"],
-    ["Singapore", "articles\\SG-5.txt", "Singapore's economic growth to hit 3% to 5% in 2022; inflation still a pressing concern"],
+    ["Singapore", "articles\\SG-5.txt",
+     "Singapore's economic growth to hit 3% to 5% in 2022; inflation still a pressing concern"],
 
     ["Malaysia", "articles\\MY-1.txt", "Key Statistics of Labour Force in Malaysia, January 2022"],
     ["Malaysia", "articles\\MY-2.txt", "A Full Guide on Safety in Malaysia"],
@@ -80,7 +108,8 @@ articles = [
     ["Malaysia", "articles\\MY-4.txt", "Malaysia's economy to grow strongly in 2022, says Amro"],
     ["Malaysia", "articles\\MY-5.txt", "Socio-Economic Research Centre: A better year in 2022 for Malaysian economy"],
 
-    ["United State", "articles\\US-1.txt", "Most Americans Say the Current Economy Is Helping the Rich, Hurting the Poor and Middle Class"],
+    ["United State", "articles\\US-1.txt",
+     "Most Americans Say the Current Economy Is Helping the Rich, Hurting the Poor and Middle Class"],
     ["United State", "articles\\US-2.txt", "The rapid growth the U.S. economy has seen is about to hit a wall"],
     ["United State", "articles\\US-3.txt", "U.S. Economic Outlook"],
     ["United State", "articles\\US-4.txt", "If the Economy Is Doing So Well, Why Does It Feel Like a Disaster?"],
@@ -100,19 +129,23 @@ articles = [
 ]
 # Process the 25 articles we found to find the most appropriate country to expan branch
 for numOfArticle in range(len(articles)):
-    preprocessArticle(articles[numOfArticle][0], articles[numOfArticle][1], articles[numOfArticle][2], positiveWordsList, negativeWordsList, neutralWordsList, rank)
+    preprocessArticle(articles[numOfArticle][0], articles[numOfArticle][1], articles[numOfArticle][2],
+                      positiveWordsList, negativeWordsList, neutralWordsList, rank)
 
 # Find out the most worth country to have the store expansion according to the positive & negative sentiment
 expandBranch(rank)
 
+print(
+    "This algorithm is accurate to give you an overview on the overall positive and negative sentiment on each country so that you can determine the country to have your branch expansion.")
+print("In a nutshell, This is the ranking based on the differences in the countries' positive and negative words:")
+rankingOfCountry(rank)
+print(
+    "However, we recommend you to read the article by yourself so that you can see some economical graphs for better visualization which is not found here.\n")
+print(
+    "Besides, it is also necessary for us to check the distributed geographical locations in the country\nto determine" + " the local distributed centre in the country to optimize the delivery cost if we want expand our stores in that country\n")
 
 plotlyDash.build_csv_file(rank)
 plotlyDash.build()
-
-
-print("However, it is also necessary for us to check the distributed geographical locations in the country\nto determine" +
-      " the local distributed centre in the country to optimize the delivery cost if we want expand our stores in that country")
-
 
 # Files of every targeted country to expand the business
 targetFiles = [r'C:\Users\user\Documents\Moonbucks Expand Targets\MY.xlsx',
@@ -121,6 +154,7 @@ targetFiles = [r'C:\Users\user\Documents\Moonbucks Expand Targets\MY.xlsx',
                r'C:\Users\user\Documents\Moonbucks Expand Targets\TW.xlsx',
                r'C:\Users\user\Documents\Moonbucks Expand Targets\JP.xlsx'
                ]
+
 
 # An object class used to store the information of the distribution centre
 class distributionCentres:
@@ -131,7 +165,9 @@ class distributionCentres:
         self.vecD = vecD
 
     def result(self):
-        print("Suitable Distribution center in ", self.nation, ": \n", self.addr, "\nCoordinate : \n [",self.coor, "]", "\nVector distance : \n [", "%.1f" % self.vecD, "km ]")
+        print("Suitable Distribution center in ", self.nation, ": \n", self.addr, "\nCoordinate : \n [", self.coor, "]",
+              "\nVector distance : \n [", "%.1f" % self.vecD, "km ]")
+
 
 def distanceSum(des, API_key):
     sum = 0
@@ -139,26 +175,30 @@ def distanceSum(des, API_key):
     i = 0
     while i < des.size:
         for destination in des:
-            url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins="+ str(des[i].split(", ")[0])+ "%2C" + str(des[i].split(", ")[1]) + \
-                  "&destinations=" + str(destination.split(", ")[0]) + "%2C" + str(destination.split(", ")[1]) + "&key=" + API_key
+            url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + str(
+                des[i].split(", ")[0]) + "%2C" + str(des[i].split(", ")[1]) + \
+                  "&destinations=" + str(destination.split(", ")[0]) + "%2C" + str(
+                destination.split(", ")[1]) + "&key=" + API_key
 
             payload = {}
             headers = {}
 
             response = requests.request("GET", url, headers=headers, data=payload)
-            distance = response.json().get("rows")[0].get("elements")[0].get("distance").get("text") # Retrieve only the required distance data
+            distance = response.json().get("rows")[0].get("elements")[0].get("distance").get(
+                "text")  # Retrieve only the required distance data
             value = distance.split(" ")
-            sum += float(value[0].replace(',', '')) # Sum up to find the vector distance for each location
+            sum += float(value[0].replace(',', ''))  # Sum up to find the vector distance for each location
 
         if sum < min:
             min = sum
             min_coor = des[i]
             centre = response.json().get("origin_addresses")
 
-        i+=1
+        i += 1
         sum = 0
     selectedCentre = distributionCentres(data.Nationality[0], centre, min_coor, min)
     return selectedCentre
+
 
 i = 0
 finalResult = []
@@ -167,11 +207,10 @@ for i in range(len(targetFiles)):
     des = data.Coordinates
     API_key = 'AIzaSyBKY4xH1CzfE_BjJ4IDFo-5dboz1qJTWvc'
     location = distanceSum(des, API_key)
-    finalResult.append(location) # Store all resulting distribution centre in each country into a list
+    finalResult.append(location)  # Store all resulting distribution centre in each country into a list
 
 print("All centres coordinates : \n")
 print(f"{'Country' :<20} Coordinates")
 print("---------------------------------------------")
 for a in finalResult:
     print(f"{a.nation :<20} {a.coor}")
-
