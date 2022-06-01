@@ -153,20 +153,22 @@ targetFiles = [r'Moonbucks Expand Targets\MY.xlsx',
                r'Moonbucks Expand Targets\JP.xlsx'
                ]
 
+i = 0
 finalResult = []
 for i in range(len(targetFiles)):
     data = pd.read_excel(targetFiles[i])
     des = data.Coordinates
     API_key = 'AIzaSyBAeA4z6IoKc5uU_--TTQ0HWBHCFvDpf5g'
     location = distributionCentre.findCentre(des, API_key, data)
+    print(location.nation, "Centre Coordinate: ", location.coor)
     distributionCentre.showPath(location, des, API_key)
-    finalResult.append(location)  # Store all resulting distribution centre in each country into a list
+    finalResult.append(location) #Store all resulting distribution centre in each country into a list
 
 print("All centres coordinates : \n")
-print(f"{'Country' :<20} Coordinates")
-print("---------------------------------------------")
+print(f"{'Country' :<25} {'Distribution Centre Coordinates' :<40} Total Shortest Distance")
+print("------------------------------------------------------------------------------------------")
 for a in finalResult:
-    print(f"{a.nation :<20} {a.coor}")
+    print(f"{a.nation :<25} {a.coor :<40} {a.vecD :>13}km")
 
 plotlyDash.build_csv_file(rank)
 plotlyDash.build()
