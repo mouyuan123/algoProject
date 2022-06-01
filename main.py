@@ -154,9 +154,7 @@ targetFiles = [r'Moonbucks Expand Targets\MY.xlsx',
                ]
 
 finalResult = []
-print('aa')
 for i in range(len(targetFiles)):
-    print("aa2")
     data = pd.read_excel(targetFiles[i])
     des = data.Coordinates
     API_key = 'AIzaSyBAeA4z6IoKc5uU_--TTQ0HWBHCFvDpf5g'
