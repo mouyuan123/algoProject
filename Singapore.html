@@ -1,0 +1,124 @@
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Google Maps - gmplot</title>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=visualization&key=AIzaSyBAeA4z6IoKc5uU_--TTQ0HWBHCFvDpf5g"></script>
+<script type="text/javascript">
+    function initialize() {
+        var map = new google.maps.Map(document.getElementById("map_canvas"), {
+            zoom: 13,
+            center: new google.maps.LatLng(1.323794, 103.810141)
+        });
+
+        new google.maps.DirectionsService().route({
+            origin: new google.maps.LatLng(1.323794, 103.810141),
+            destination: new google.maps.LatLng(1.323794, 103.810141),
+            waypoints: [
+                {location: new google.maps.LatLng(1.435163, 103.786550), stopover: false},
+            ],
+            travelMode: "DRIVING"
+        }, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                new google.maps.DirectionsRenderer({map: map}).setDirections(response);
+            }
+        });
+
+        new google.maps.DirectionsService().route({
+            origin: new google.maps.LatLng(1.323794, 103.810141),
+            destination: new google.maps.LatLng(1.323794, 103.810141),
+            waypoints: [
+                {location: new google.maps.LatLng(1.293282, 103.832166), stopover: false},
+            ],
+            travelMode: "DRIVING"
+        }, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                new google.maps.DirectionsRenderer({map: map}).setDirections(response);
+            }
+        });
+
+        new google.maps.DirectionsService().route({
+            origin: new google.maps.LatLng(1.323794, 103.810141),
+            destination: new google.maps.LatLng(1.323794, 103.810141),
+            waypoints: [
+                {location: new google.maps.LatLng(1.317127, 103.843910), stopover: false},
+            ],
+            travelMode: "DRIVING"
+        }, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                new google.maps.DirectionsRenderer({map: map}).setDirections(response);
+            }
+        });
+
+        new google.maps.DirectionsService().route({
+            origin: new google.maps.LatLng(1.323794, 103.810141),
+            destination: new google.maps.LatLng(1.323794, 103.810141),
+            waypoints: [
+                {location: new google.maps.LatLng(1.312964, 103.925447), stopover: false},
+            ],
+            travelMode: "DRIVING"
+        }, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                new google.maps.DirectionsRenderer({map: map}).setDirections(response);
+            }
+        });
+
+        new google.maps.DirectionsService().route({
+            origin: new google.maps.LatLng(1.323794, 103.810141),
+            destination: new google.maps.LatLng(1.323794, 103.810141),
+            waypoints: [
+                {location: new google.maps.LatLng(1.354710, 103.831010), stopover: false},
+            ],
+            travelMode: "DRIVING"
+        }, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                new google.maps.DirectionsRenderer({map: map}).setDirections(response);
+            }
+        });
+
+        new google.maps.DirectionsService().route({
+            origin: new google.maps.LatLng(1.323794, 103.810141),
+            destination: new google.maps.LatLng(1.323794, 103.810141),
+            waypoints: [
+                {location: new google.maps.LatLng(1.338966, 103.705703), stopover: false},
+            ],
+            travelMode: "DRIVING"
+        }, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                new google.maps.DirectionsRenderer({map: map}).setDirections(response);
+            }
+        });
+
+        new google.maps.DirectionsService().route({
+            origin: new google.maps.LatLng(1.323794, 103.810141),
+            destination: new google.maps.LatLng(1.323794, 103.810141),
+            waypoints: [
+                {location: new google.maps.LatLng(1.264941, 103.820282), stopover: false},
+            ],
+            travelMode: "DRIVING"
+        }, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                new google.maps.DirectionsRenderer({map: map}).setDirections(response);
+            }
+        });
+
+        new google.maps.DirectionsService().route({
+            origin: new google.maps.LatLng(1.323794, 103.810141),
+            destination: new google.maps.LatLng(1.323794, 103.810141),
+            waypoints: [
+                {location: new google.maps.LatLng(1.323794, 103.810141), stopover: false},
+            ],
+            travelMode: "DRIVING"
+        }, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                new google.maps.DirectionsRenderer({map: map}).setDirections(response);
+            }
+        });
+
+    }
+</script>
+</head>
+<body style="margin:0px; padding:0px;" onload="initialize()">
+    <div id="map_canvas" style="width: 100%; height: 100%;" />
+</body>
+</html>
