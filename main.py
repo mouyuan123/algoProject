@@ -64,18 +64,66 @@ def expandBranch(ranking):
             leastDifference) + " between overall positive and negative words\n")
 
 
+# # To find out the most appropriate country to have store expansion based on the positive sentiments among countries
+# def rankingOfCountry(ranking):
+#     rank = {}
+#     for country, sentiments in ranking.items():
+#         rank[country] = sentiments[0] - sentiments[1]
+#     sorted_rank = dict(sorted(rank.items(), key=operator.itemgetter(1), reverse=True))
+#     i = 1
+#     print("......................................................")
+#     for country, difference in sorted_rank.items():
+#         print(str(i) + ". " + country + ": " + str(difference))
+#         i = i + 1
+#     print("......................................................")
 # To find out the most appropriate country to have store expansion based on the positive sentiments among countries
-def rankingOfCountry(ranking):
-    rank = {}
+
+
+# To store the 5 countries in one array and the category in another array from a dictionary
+def storeRanking(countryArray, categoryArray, ranking):
+    i = 0
     for country, sentiments in ranking.items():
-        rank[country] = sentiments[0] - sentiments[1]
-    sorted_rank = dict(sorted(rank.items(), key=operator.itemgetter(1), reverse=True))
-    i = 1
-    print("......................................................")
-    for country, difference in sorted_rank.items():
-        print(str(i) + ". " + country + ": " + str(difference))
+        countryArray[i] = country
+        categoryArray[i] = sentiments[0] - sentiments[1]
         i = i + 1
-    print("......................................................")
+
+
+# Sort the country based on different type of category
+def partition(l, r, countryArray, categoryArray):
+    # Last element will be the pivot and the first element the pointer
+    pivot = l
+    pivotIndex = l
+    for i in range(l + 1, r):
+        if categoryArray[i] >= categoryArray[pivot]:
+            # Swapping values smaller than the pivot to the front
+            swap(categoryArray, pivotIndex + 1, i)
+            swap(countryArray, pivotIndex + 1, i)
+            pivotIndex += 1
+    # Finally swapping the last element with the pointer indexed number
+    swap(categoryArray, pivot, pivotIndex)
+    swap(countryArray, pivot, pivotIndex)
+    return pivotIndex
+
+
+def swap(array, l, r):
+    temp = array[l]
+    array[l] = array[r]
+    array[r] = temp
+
+
+# With quicksort() function, we will be utilizing the above code to obtain the pointer
+# at which the left values are all smaller than the number at pointer index and vice versa
+# for the right values.
+
+
+def quicksort(l, r, countryArray, categoryArray):
+    if len(categoryArray) == 1:  # Terminating Condition for recursion. VERY IMPORTANT!
+        return categoryArray
+    if l < r:
+        pivotIndex = partition(l, r, countryArray, categoryArray)
+        quicksort(l, pivotIndex - 1, countryArray, categoryArray)  # Recursively sorting the left values
+        quicksort(pivotIndex + 1, r, countryArray, categoryArray)  # Recursively sorting the right values
+    return categoryArray
 
 
 # Build an array of positive words using WordList class
@@ -138,8 +186,18 @@ expandBranch(rank)
 
 print(
     "This algorithm is accurate to give you an overview on the overall positive and negative sentiment on each country so that you can determine the country to have your branch expansion.")
+print("When the length of article increase, the number of positive and negative words also increase. Hence, we use the difference to rank the country to increase accuracy.")
 print("In a nutshell, This is the ranking based on the differences in the countries' positive and negative words:")
-rankingOfCountry(rank)
+# Sort the ranking of the countries based on the difference between the positive and negative words
+countryList = [None] * 5
+categoryList = [None] * 5
+storeRanking(countryList, categoryList, rank)
+sortedCategoryList = quicksort(0, len(countryList), countryList, categoryList)
+# Display the list from the most recommended to the least recommended country based on difference between positive and negative words
+print(".............................................................")
+for i in range(len(sortedCategoryList)):
+    print(str(i+1) + ". " + str(countryList[i]) + " => " + str(sortedCategoryList[i]))
+print(".............................................................")
 print(
     "However, we recommend you to read the article by yourself so that you can see some economical graphs for better visualization which is not found here.\n")
 print(
@@ -162,7 +220,7 @@ for i in range(len(targetFiles)):
     location = distributionCentre.findCentre(des, API_key, data)
     print(location.nation, "Centre Coordinate: ", location.coor)
     distributionCentre.showPath(location, des, API_key)
-    finalResult.append(location) #Store all resulting distribution centre in each country into a list
+    finalResult.append(location)  # Store all resulting distribution centre in each country into a list
 
 print("All centres coordinates : \n")
 print(f"{'Country' :<25} {'Distribution Centre Coordinates' :<40} Total Shortest Distance")
