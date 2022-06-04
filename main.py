@@ -1,11 +1,8 @@
-import operator
-
 import Article  # Import the class we created here to create its instances
 import AhoCorasick
 import WordList
 import plotlyDash
 import pandas as pd  # Import the excel files
-import requests
 import distributionCentre
 
 
@@ -16,9 +13,9 @@ def listofWords(sentiment, wordTxt):
 
 
 # Process to extract words, filter out stop words and concatenate all the words into one text from each article using Article class
-def preprocessArticle(country, articleTxt, articleTitle, positiveList, negativeList, neutralList, dictionary):
-    article = Article.Article(country, articleTxt, articleTitle)
-    text = article.extractWords()
+def preprocessArticle(country, URL, positiveList, negativeList, neutralList, dictionary):
+    article = Article.Article(country)
+    text = article.extract_words_from_url(URL)
     justifySentiment(country, text, positiveList, negativeList, neutralList, dictionary)
 
 
@@ -55,28 +52,14 @@ def expandBranch(ranking):
     leastDifference = 0
     for country, sentiments in ranking.items():
         print("For " + country + ", the overall positive words are " + str(
-            sentiments[0]) + " while the overall negative words are " + str(sentiments[1]))
+            sentiments[0]) + ", the overall negative words are " + str(
+            sentiments[1]) + " and the overall neutral words are " + str(sentiments[2]))
         if sentiments[0] - sentiments[1] > leastDifference:
             mostValuableCountry = country
             leastDifference = sentiments[0] - sentiments[1]
     print(
         "As a result, " + mostValuableCountry + " is the worth having branch expansion as it has the least difference, " + str(
             leastDifference) + " between overall positive and negative words\n")
-
-
-# # To find out the most appropriate country to have store expansion based on the positive sentiments among countries
-# def rankingOfCountry(ranking):
-#     rank = {}
-#     for country, sentiments in ranking.items():
-#         rank[country] = sentiments[0] - sentiments[1]
-#     sorted_rank = dict(sorted(rank.items(), key=operator.itemgetter(1), reverse=True))
-#     i = 1
-#     print("......................................................")
-#     for country, difference in sorted_rank.items():
-#         print(str(i) + ". " + country + ": " + str(difference))
-#         i = i + 1
-#     print("......................................................")
-# To find out the most appropriate country to have store expansion based on the positive sentiments among countries
 
 
 # To store the 5 countries in one array and the category in another array from a dictionary
@@ -90,16 +73,16 @@ def storeRanking(countryArray, categoryArray, ranking):
 
 # Sort the country based on different type of category
 def partition(l, r, countryArray, categoryArray):
-    # Last element will be the pivot and the first element the pointer
+    # Assume first element as the pivot
     pivot = l
     pivotIndex = l
     for i in range(l + 1, r):
         if categoryArray[i] >= categoryArray[pivot]:
-            # Swapping values smaller than the pivot to the front
+            # Swapping values larger than the pivot to the front (The greater value has higher priority)
             swap(categoryArray, pivotIndex + 1, i)
             swap(countryArray, pivotIndex + 1, i)
             pivotIndex += 1
-    # Finally swapping the last element with the pointer indexed number
+    # Swap the pivot element to the pivot index ( the correct position of the pivot )
     swap(categoryArray, pivot, pivotIndex)
     swap(countryArray, pivot, pivotIndex)
     return pivotIndex
@@ -111,17 +94,12 @@ def swap(array, l, r):
     array[r] = temp
 
 
-# With quicksort() function, we will be utilizing the above code to obtain the pointer
-# at which the left values are all smaller than the number at pointer index and vice versa
-# for the right values.
-
-
 def quicksort(l, r, countryArray, categoryArray):
-    if len(categoryArray) == 1:  # Terminating Condition for recursion. VERY IMPORTANT!
+    if len(categoryArray) == 1:  # Terminating Condition for recursion.
         return categoryArray
     if l < r:
         pivotIndex = partition(l, r, countryArray, categoryArray)
-        quicksort(l, pivotIndex - 1, countryArray, categoryArray)  # Recursively sorting the left values
+        quicksort(l, pivotIndex, countryArray, categoryArray)  # Recursively sorting the left values
         quicksort(pivotIndex + 1, r, countryArray, categoryArray)  # Recursively sorting the right values
     return categoryArray
 
@@ -140,53 +118,60 @@ rank = {"Malaysia": [0, 0, 0, 0],
         "Taiwan": [0, 0, 0, 0],
         "Japan": [0, 0, 0, 0]
         }
+
 # Store the 25 articles in an array before processing
 articles = [
-    ["Singapore", "articles\\SG-1.txt", "Getting Singapore in shape: Economic challenges and how to meet them"],
-    ["Singapore", "articles\\SG-2.txt",
-     "Economic Development and Social Integration: Singapore’s Evolving Social Compact"],
-    ["Singapore", "articles\\SG-3.txt",
-     "Singapore’s economic situation is ‘dire’ as global coronavirus resurgence looms, central bank says"],
-    ["Singapore", "articles\\SG-4.txt", "Singapore economy grows 3.4% in Q1, slower than previous quarter"],
-    ["Singapore", "articles\\SG-5.txt",
-     "Singapore's economic growth to hit 3% to 5% in 2022; inflation still a pressing concern"],
+    ["Malaysia",
+     "https://www.dosm.gov.my/v1/index.php?r=column/cthemeByCat&cat=124&bul_id=UEpPd3dKQkM2ZVRnVFZ3T0w1d1Zrdz09&menu_id=Tm8zcnRjdVRNWWlpWjRlbmtlaDk1UT09"],
+    ["Malaysia", "https://internationalliving.com/countries/malaysia/is-malaysia-safe/"],
+    ["Malaysia", "https://www.theedgemarkets.com/article/oecd-forecasts-malaysia-economy-grow-6-2022"],
+    ["Malaysia",
+     "https://www.malaymail.com/news/malaysia/2022/06/03/finance-ministry-tax-revenue-reforms-key-to-socio-economic-resilience/10520"],
+    ["Malaysia",
+     "https://www.malaymail.com/news/malaysia/2022/01/04/socio-economic-research-centre-a-better-year-in-2022-for-malaysian-economy/2032924"],
 
-    ["Malaysia", "articles\\MY-1.txt", "Key Statistics of Labour Force in Malaysia, January 2022"],
-    ["Malaysia", "articles\\MY-2.txt", "A Full Guide on Safety in Malaysia"],
-    ["Malaysia", "articles\\MY-3.txt", "OECD forecasts Malaysia economy to grow 6% in 2022"],
-    ["Malaysia", "articles\\MY-4.txt", "Malaysia's economy to grow strongly in 2022, says Amro"],
-    ["Malaysia", "articles\\MY-5.txt", "Socio-Economic Research Centre: A better year in 2022 for Malaysian economy"],
+    ["Singapore",
+     "https://www.lowyinstitute.org/publications/getting-singapore-shape-economic-challenges-and-how-meet-them-0"],
+    ["Singapore",
+     "https://www.csc.gov.sg/articles/economic-development-and-social-integration-singapore-s-evolving-social-compact#notes"],
+    ["Singapore",
+     "https://www.cnbc.com/2020/07/16/singapore-economy-still-dire-amid-global-resurgence-in-coronavirus-mas-says.html"],
+    ["Singapore", "https://www.cnbc.com/2021/08/11/singapore-updates-q2-gdp-full-year-2021-economic-forecasts.html"],
+    ["Singapore", "https://www.csc.gov.sg/articles/singapore%27s-social-support-system-two-anomalies"],
 
-    ["United State", "articles\\US-1.txt",
-     "Most Americans Say the Current Economy Is Helping the Rich, Hurting the Poor and Middle Class"],
-    ["United State", "articles\\US-2.txt", "The rapid growth the U.S. economy has seen is about to hit a wall"],
-    ["United State", "articles\\US-3.txt", "U.S. Economic Outlook"],
-    ["United State", "articles\\US-4.txt", "If the Economy Is Doing So Well, Why Does It Feel Like a Disaster?"],
-    ["United State", "articles\\US-5.txt", "The Economic Situation, March 2022"],
+    ["United State",
+     "https://www.pewresearch.org/social-trends/2019/12/11/most-americans-say-the-current-economy-is-helping-the-rich-hurting-the-poor-and-middle-class/"],
+    ["United State",
+     "https://www.cnbc.com/2021/07/23/the-rapid-growth-the-us-economy-has-seen-is-about-to-hit-a-wall.html"],
+    ["United State", "https://www.focus-economics.com/countries/united-states"],
+    ["United State", "https://time.com/6130525/economy-doing-well-why-does-it-feel-like-a-disaster/"],
+    ["United State", "https://www.mercatus.org/publications/regulation/economic-situation-march-2022"],
 
-    ["Taiwan", "articles\\TW-1.txt", "Taiwan’s inflation rate reaches 3.38% in April"],
-    ["Taiwan", "articles\\TW-2.txt", "Food/beverage sales for 2021 affected by COVID-19, down over 6%"],
-    ["Taiwan", "articles\\TW-3.txt", "Taiwan Faces Largest COVID-19 Outbreak Yet"],
-    ["Taiwan", "articles\\TW-4.txt", "Taiwan will not 'cruelly' lock down like China: premier"],
-    ["Taiwan", "articles\\TW-5.txt", "Taiwan Economics in Brief – May 2022"],
+    ["Taiwan", "https://www.taiwannews.com.tw/en/news/4530057"],
+    ["Taiwan", "https://focustaiwan.tw/business/202201240020"],
+    ["Taiwan", "https://asiatimes.com/2020/08/taiwanese-economy-stands-out-globally/"],
+    ["Taiwan", "https://www.reuters.com/world/asia-pacific/taiwan-revises-up-2022-gdp-forecast-2022-02-24/"],
+    ["Taiwan", "https://topics.amcham.com.tw/2022/05/taiwan-economic-outlook-may-3/"],
 
-    ["Japan", "articles\\JP-1.txt", "The societal pressures that shape Japan"],
-    ["Japan", "articles\\JP-2.txt", "Japan headed for uneven recovery in the first half"],
-    ["Japan", "articles\\JP-3.txt", "3 Economic Challenges Facing Japan in 2022"],
-    ["Japan", "articles\\JP-4.txt", "JAPAN: ECONOMIC AND POLITICAL OUTLINE"],
-    ["Japan", "articles\\JP-5.txt", "Japan's Economy and Its Impact on the U.S. Economy"]
+    ["Japan", "https://www.insidejapantours.com/blog/2020/08/12/the-societal-pressures-that-shape-japan/"],
+    ["Japan", "https://www2.deloitte.com/us/en/insights/economy/asia-pacific/japan-economic-outlook.htm"],
+    ["Japan", "https://www.nippon.com/en/in-depth/d00663/"],
+    ["Japan", "https://santandertrade.com/en/portal/analyse-markets/japan/economic-political-outline"],
+    ["Japan", "https://www.thebalance.com/japan-s-economy-recession-effect-on-u-s-and-world-3306007"]
 ]
+
 # Process the 25 articles we found to find the most appropriate country to expan branch
 for numOfArticle in range(len(articles)):
-    preprocessArticle(articles[numOfArticle][0], articles[numOfArticle][1], articles[numOfArticle][2],
-                      positiveWordsList, negativeWordsList, neutralWordsList, rank)
+    preprocessArticle(articles[numOfArticle][0], articles[numOfArticle][1], positiveWordsList, negativeWordsList,
+                      neutralWordsList, rank)
 
 # Find out the most worth country to have the store expansion according to the positive & negative sentiment
 expandBranch(rank)
 
 print(
     "This algorithm is accurate to give you an overview on the overall positive and negative sentiment on each country so that you can determine the country to have your branch expansion.")
-print("When the length of article increase, the number of positive and negative words also increase. Hence, we use the difference to rank the country to increase accuracy.")
+print(
+    "When the length of article increase, the number of positive and negative words also increase. Hence, we use the difference to rank the country to increase accuracy.")
 print("In a nutshell, This is the ranking based on the differences in the countries' positive and negative words:")
 # Sort the ranking of the countries based on the difference between the positive and negative words
 countryList = [None] * 5
@@ -196,10 +181,12 @@ sortedCategoryList = quicksort(0, len(countryList), countryList, categoryList)
 # Display the list from the most recommended to the least recommended country based on difference between positive and negative words
 print(".............................................................")
 for i in range(len(sortedCategoryList)):
-    print(str(i+1) + ". " + str(countryList[i]) + " => " + str(sortedCategoryList[i]))
+    print(str(i + 1) + ". " + str(countryList[i]) + " => " + str(sortedCategoryList[i]))
 print(".............................................................")
 print(
     "However, we recommend you to read the article by yourself so that you can see some economical graphs for better visualization which is not found here.\n")
+plotlyDash.build_csv_file(rank)
+plotlyDash.build()
 print(
     "Besides, it is also necessary for us to check the distributed geographical locations in the country\nto determine" + " the local distributed centre in the country to optimize the delivery cost if we want expand our stores in that country\n")
 
@@ -227,6 +214,3 @@ print(f"{'Country' :<25} {'Distribution Centre Coordinates' :<40} Total Shortest
 print("------------------------------------------------------------------------------------------")
 for a in finalResult:
     print(f"{a.nation :<25} {a.coor :<40} {a.vecD :>13}km")
-
-plotlyDash.build_csv_file(rank)
-plotlyDash.build()
