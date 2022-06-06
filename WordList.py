@@ -20,14 +20,6 @@ class WordList:
                 array = array + splitting
             for i in range(len(array)):
                 array[i] = array[i].replace(" ", "")
-                # if sentiment == "POSITIVE":
-                #     # Append all the positive words with "+"
-                #     for i in range(0, len(array)):
-                #         array[i] = array[i] + "+"
-                # else:
-                #     # Append all the negative words with "-"
-                #     for i in range(0, len(array)):
-                #         array[i] = array[i] + "-"
         elif sentiment == "STOP":
             with open(self.textFile, "r", encoding="utf-8") as file:
                 textLine = file.readline().lower()

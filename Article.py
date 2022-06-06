@@ -11,37 +11,11 @@ class Article:
     list = WordList.WordList("STOP", "words\\Stop.txt")
     stopWordsList = list.wordList()
 
-    # #  Create instance of article
-    # def __init__(self, country, textFile, title):
-    #     self.country = country
-    #     self.textFile = textFile
-    #     self.title = title
-    #     Article.articleCount += 1
-    #     Article.toString(self)
-
     #  Create instance of article
-
     def __init__(self, country):
         self.country = country
         Article.articleCount += 1
         Article.toString(self)
-
-    # To extract all the words from the article and store inside an array
-    # Time Complexity  = O(N) , where N = number of lines in an article
-    # def extractWords(self):
-    #     array = []
-    #     with open(self.textFile, "r", encoding="utf-8") as file:
-    #         textLine = file.readline().lower()
-    #         text = ""
-    #         while textLine:
-    #             textLine = re.sub(r'http\S+', '', textLine)  # Remove all the URL found inside the articles
-    #             splitting = re.findall("[a-zA-Z'-]+", textLine)  # Extracts all the "words only" from the article (e.g., "you've" / "one-pointedness" are also acceptable)
-    #             array = array + splitting
-    #             textLine = file.readline().lower()
-    #     Article.replace_all_stop_words(self, array, Article.stopWordsList)
-    #     for i in range(len(array)):
-    #         text += array[i]
-    #     return text
 
     def extract_words_from_url(self, url):
         # Retrieve the complete HTML codes from the website
