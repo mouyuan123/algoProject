@@ -26,7 +26,7 @@ class Article:
         Article.replace_all_stop_words(self, word_list, Article.stopWordsList)
         # Combine the article as a long text before finding the positive and negative words
         articleText = ''.join(word_list)
-        print(articleText)
+        # print(articleText)
         return articleText
 
     def replace_all_stop_words(self, articleWords, stopWordList):
