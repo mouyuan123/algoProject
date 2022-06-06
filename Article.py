@@ -1,8 +1,6 @@
 import string
-
 import requests
 from bs4 import BeautifulSoup
-
 import WordList
 
 
@@ -24,12 +22,11 @@ class Article:
         soup = BeautifulSoup(articleHTML, 'html.parser')
         # Remove all the punctuation from the article and make the words to lowercase (consistency)
         word_list = soup.get_text().translate(str.maketrans('', '', string.punctuation)).lower().split()
-        # print(word_list)
         # Filter out all the stop words before making it a long text
         Article.replace_all_stop_words(self, word_list, Article.stopWordsList)
         # Combine the article as a long text before finding the positive and negative words
         articleText = ''.join(word_list)
-        # print(articleText)
+        print(articleText)
         return articleText
 
     def replace_all_stop_words(self, articleWords, stopWordList):
@@ -41,3 +38,4 @@ class Article:
     def toString(self):
         print(
             "Article: %d%3s Country: %s%3s" % (Article.articleCount, " ", self.country, " "))
+

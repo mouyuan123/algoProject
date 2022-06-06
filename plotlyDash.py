@@ -1,15 +1,5 @@
-"""
-A simple app demonstrating how to dynamically render tab content containing
-dcc.Graph components to ensure graphs get sized correctly. We also show how
-dcc.Store can be used to cache the results of an expensive graph generation
-process so that switching tabs is fast.
-"""
 import os
-import time
-
 import dash
-import dash_bootstrap_components as dbc
-import numpy as np
 import plotly.graph_objs as go
 import pandas as pd
 from dash import Input, Output, dcc, html
@@ -92,8 +82,7 @@ def build():
         'fontWeight': 'bold',
         'border-radius': '15px',
         'background-color': '#F2F2F2',
-        'box-shadow': '4px 4px 4px 4px lightgrey',
-
+        'box-shadow': '4px 4px 4px 4px lightgrey'
     }
 
     tab_selected_style = {
@@ -143,6 +132,9 @@ def build():
                                name='Taiwan'))
             return updateLayout(d)
         elif country == 'All (Pie Chart)':
+            positiveWords = dataFrame['Malaysia'][sentimentList[0]] + dataFrame['Singapore'][sentimentList[0]] + dataFrame['United State'][sentimentList[0]] + dataFrame['Japan'][sentimentList[0]] + dataFrame['Taiwan'][sentimentList[0]]
+            negativeWords = dataFrame['Malaysia'][sentimentList[1]] + dataFrame['Singapore'][sentimentList[1]] + dataFrame['United State'][sentimentList[1]] + dataFrame['Japan'][sentimentList[1]] + dataFrame['Taiwan'][sentimentList[1]]
+            neutralWords = dataFrame['Malaysia'][sentimentList[2]] + dataFrame['Singapore'][sentimentList[2]] + dataFrame['United State'][sentimentList[2]] + dataFrame['Japan'][sentimentList[2]] + dataFrame['Taiwan'][sentimentList[2]]
             pie = pd.DataFrame(
                 {"countryName": ['Malaysia', 'Singapore', 'United States', 'Japan', 'Taiwan'],
                     "value1": [dataFrame['Malaysia'][sentimentList[0]],
@@ -170,7 +162,7 @@ def build():
             fig.update_traces(hole=.4, hoverinfo="label+value")
 
             fig.update_layout(
-                title_text="Percentage of Positive, Negative, and Neutral Words For Each Country",
+                title_text="Percentage of Positive Words ("+str(positiveWords)+"), Negative Words ("+str(negativeWords)+"), and Neutral Words Words ("+str(neutralWords)+") For Each Country",
                 # Add title in the center of the donut pies.
                 annotations=[dict(text='Positive words', x=0.10, y=0.5, font_size=15, showarrow=False),
                              dict(text='Negative words', x=0.50, y=0.5, font_size=15, showarrow=False),
@@ -234,3 +226,5 @@ def build():
             ])
 
     app.run_server()
+
+

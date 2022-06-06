@@ -111,3 +111,6 @@ def get_keywords_found(line):
 # We need to clear it every time before using this list, else the negative and positive words will be appended together
 def clear_Trie():
     AdjList.clear()
+
+
+

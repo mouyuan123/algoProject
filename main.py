@@ -111,7 +111,8 @@ negativeWordsList = listofWords("NEGATIVE", "words\\Negative.txt")
 # Build an array of negative words using WordList class
 neutralWordsList = listofWords("NEUTRAL", "words\\Neutral.txt")
 # Build a dictionary to store the overall number of positive and negative words of each country for ranking
-# The index 0 store the amount of positive words & the index 1 store the amount of negative words & the index 2 store the amount of neutral words & the index 3 store the length of articles (used for graph implementation)
+# The index 0 store the amount of positive words & the index 1 store the amount of negative words
+# the index 2 store the amount of neutral words & the index 3 store the length of articles (used for graph implementation)
 rank = {"Malaysia": [0, 0, 0, 0],
         "United State": [0, 0, 0, 0],
         "Singapore": [0, 0, 0, 0],
@@ -151,7 +152,7 @@ articles = [
     ["Taiwan", "https://focustaiwan.tw/business/202201240020"],
     ["Taiwan", "https://asiatimes.com/2020/08/taiwanese-economy-stands-out-globally/"],
     ["Taiwan", "https://www.reuters.com/world/asia-pacific/taiwan-revises-up-2022-gdp-forecast-2022-02-24/"],
-    ["Taiwan", "https://topics.amcham.com.tw/2022/05/taiwan-economic-outlook-may-3/"],
+    ["Taiwan", "https://www.focus-economics.com/country-indicator/taiwan/gdp"],
 
     ["Japan", "https://www.insidejapantours.com/blog/2020/08/12/the-societal-pressures-that-shape-japan/"],
     ["Japan", "https://www2.deloitte.com/us/en/insights/economy/asia-pacific/japan-economic-outlook.htm"],
