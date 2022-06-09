@@ -186,8 +186,7 @@ for i in range(len(sortedCategoryList)):
 print(".............................................................")
 print(
     "However, we recommend you to read the article by yourself so that you can see some economical graphs for better visualization which is not found here.\n")
-plotlyDash.build_csv_file(rank)
-plotlyDash.build()
+
 print(
     "Besides, it is also necessary for us to check the distributed geographical locations in the country\nto determine" + " the local distributed centre in the country to optimize the delivery cost if we want expand our stores in that country\n")
 
@@ -205,13 +204,10 @@ for i in range(len(targetFiles)):
     data = pd.read_excel(targetFiles[i])
     des = data.Coordinates
     API_key = 'AIzaSyBAeA4z6IoKc5uU_--TTQ0HWBHCFvDpf5g'
-    location = distributionCentre.findCentre(des, API_key, data)
-    print(location.nation, "Centre Coordinate: ", location.coor)
-    distributionCentre.showPath(location, des, API_key)
+    location, routeList = distributionCentre.findCentre(des, API_key, data)
     finalResult.append(location)  # Store all resulting distribution centre in each country into a list
+    optPath, optDis = distributionCentre.find_shortest_path(routeList, des, location.index)
+    distributionCentre.mapPlotter(optPath, location.coor, des, location.nation, optDis)
 
-print("All centres coordinates : \n")
-print(f"{'Country' :<25} {'Distribution Centre Coordinates' :<40} Total Shortest Distance")
-print("------------------------------------------------------------------------------------------")
-for a in finalResult:
-    print(f"{a.nation :<25} {a.coor :<40} {a.vecD :>13}km")
+plotlyDash.build_csv_file(rank)
+plotlyDash.build()
