@@ -5,6 +5,7 @@ import plotlyDash
 import pandas as pd  # Import the excel files
 import distributionCentre
 import probabilityCalculation
+import plotly.graph_objects as go
 
 
 # Build array of positive, negative and neutral words
@@ -169,7 +170,6 @@ for numOfArticle in range(len(articles)):
 
 # Find out the most worth country to have the store expansion according to the positive & negative sentiment
 expandBranch(rank)
-
 print(
     "This algorithm is accurate to give you an overview on the overall positive and negative sentiment on each country so that you can determine the country to have your branch expansion.")
 print(
@@ -258,7 +258,29 @@ print("-------------------------------------------------------------------------
 for i in range(len(countryOrder3) - 1, -1, -1):
     print(f"{ranking3 :<10} {countryOrder3[i] :<15} {valueOrder3[i] :>8.4f}")
     ranking3 = ranking3 + 1
-print("In conclusion, "+countryOrder3[len(countryOrder3)-1]+" is the best recommended for Moonbucks to have its branch expansion")
+# Provide a final ranking line chart for better visualization
+xAxis = list(rank.keys())
+yAxisSentiment = [0] * len(xAxis)
+yAxisFinalProb = [0] * len(xAxis)
+for i in range(len(xAxis)):
+    yAxisSentiment[i] = rankingOfProb[xAxis[i]]
+for i in range(len(xAxis)):
+    yAxisFinalProb[i] = recommended_country[xAxis[i]]
+fig = go.Figure()
+# Final probability based on sentiment analysis
+fig.add_trace(go.Scatter(x=xAxis, y=yAxisSentiment, name='Sentiment', mode='lines+markers',
+                         line=dict(color='royalblue')))
+# Final probability based on sentiment analysis & lowest optimal delivery cost
+fig.add_trace(go.Scatter(x=xAxis, y=yAxisFinalProb, name='Final', mode='lines+markers',
+                         line=dict(color='firebrick')))
+# Edit the layout
+fig.update_layout(title='Final Ranking of the 5 Countries',
+                  title_x=0.5,
+                  xaxis_title='Country',
+                  yaxis_title='Probability')
+fig.show()
+print("In conclusion, " + countryOrder3[
+    len(countryOrder3) - 1] + " is the best recommended for Moonbucks to have its branch expansion")
 
 # ........................................................... Question 1 Plotly Dash Graphs ..........................................
 print("\n\n")

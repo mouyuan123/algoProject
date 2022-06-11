@@ -1,9 +1,4 @@
 class probabilityCalculation():
-    positiveWords = [941, 2029, 1887, 706, 1611]
-    negativeWords = [843, 1986, 1846, 716, 1725]
-    countryName = ["MY", "US", "SG", "TW", "JP"]
-    totalJourney = [1473.60, 2812.80, 96.20, 761.60, 2693.50]
-    dieselPrice = [4.74, 4.08, 6.62, 9.27, 2.15]
 
     def probGood_LEandSC(self, dictionaryRank):
         ratio = []
