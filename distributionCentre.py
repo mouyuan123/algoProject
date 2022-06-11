@@ -85,7 +85,6 @@ def find_shortest_path(DisNodetoENodes, Nodes, centIdx):
                 vertex.append(i)
 
         minTravelPath = maxsize
-        best = permutations(vertex)
         next_permutation = permutations(vertex)
         for i in next_permutation:
             current_pathweight = 0

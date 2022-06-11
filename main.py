@@ -4,6 +4,7 @@ import WordList
 import plotlyDash
 import pandas as pd  # Import the excel files
 import distributionCentre
+import probabilityCalculation
 
 
 # Build array of positive, negative and neutral words
@@ -114,7 +115,7 @@ neutralWordsList = listofWords("NEUTRAL", "words\\Neutral.txt")
 # The index 0 store the amount of positive words & the index 1 store the amount of negative words
 # the index 2 store the amount of neutral words & the index 3 store the length of articles (used for graph implementation)
 rank = {"Malaysia": [0, 0, 0, 0],
-        "United State": [0, 0, 0, 0],
+        "United States": [0, 0, 0, 0],
         "Singapore": [0, 0, 0, 0],
         "Taiwan": [0, 0, 0, 0],
         "Japan": [0, 0, 0, 0]
@@ -140,13 +141,13 @@ articles = [
     ["Singapore", "https://www.cnbc.com/2021/08/11/singapore-updates-q2-gdp-full-year-2021-economic-forecasts.html"],
     ["Singapore", "https://www.csc.gov.sg/articles/singapore%27s-social-support-system-two-anomalies"],
 
-    ["United State",
+    ["United States",
      "https://www.pewresearch.org/social-trends/2019/12/11/most-americans-say-the-current-economy-is-helping-the-rich-hurting-the-poor-and-middle-class/"],
-    ["United State",
+    ["United States",
      "https://www.cnbc.com/2021/07/23/the-rapid-growth-the-us-economy-has-seen-is-about-to-hit-a-wall.html"],
-    ["United State", "https://www.focus-economics.com/countries/united-states"],
-    ["United State", "https://time.com/6130525/economy-doing-well-why-does-it-feel-like-a-disaster/"],
-    ["United State", "https://www.mercatus.org/publications/regulation/economic-situation-march-2022"],
+    ["United States", "https://www.focus-economics.com/countries/united-states"],
+    ["United States", "https://time.com/6130525/economy-doing-well-why-does-it-feel-like-a-disaster/"],
+    ["United States", "https://www.mercatus.org/publications/regulation/economic-situation-march-2022"],
 
     ["Taiwan", "https://www.taiwannews.com.tw/en/news/4530057"],
     ["Taiwan", "https://focustaiwan.tw/business/202201240020"],
@@ -187,6 +188,7 @@ print(".............................................................")
 print(
     "However, we recommend you to read the article by yourself so that you can see some economical graphs for better visualization which is not found here.\n")
 
+# ...................................................... Question 2 .......................................................
 print(
     "Besides, it is also necessary for us to check the distributed geographical locations in the country\nto determine" + " the local distributed centre in the country to optimize the delivery cost if we want expand our stores in that country\n")
 
@@ -200,6 +202,7 @@ targetFiles = [r'Moonbucks Expand Targets\MY.xlsx',
 
 i = 0
 finalResult = []
+countryOptDist = {}  # Store the country with its shortest distance to be used in Question 3
 for i in range(len(targetFiles)):
     data = pd.read_excel(targetFiles[i])
     des = data.Coordinates
@@ -207,7 +210,70 @@ for i in range(len(targetFiles)):
     location, routeList = distributionCentre.findCentre(des, API_key, data)
     finalResult.append(location)  # Store all resulting distribution centre in each country into a list
     optPath, optDis = distributionCentre.find_shortest_path(routeList, des, location.index)
+    countryOptDist[location.nation] = round(optDis, 1)
     distributionCentre.mapPlotter(optPath, location.coor, des, location.nation, optDis)
+print("\nAll centres coordinates:")
+print(f"{'Country' :<25} {'Distribution Centre Coordinates' :<40} Total Shortest Distance")
+print("------------------------------------------------------------------------------------------")
+for a in finalResult:
+    print(f"{a.nation :<25} {a.coor :<40} {a.vecD :>13}km")
 
+# ...................................................... Question 3 .......................................................
+pc = probabilityCalculation.probabilityCalculation()
+rankingOfProb = pc.probGood_LEandSC(rank)
+# Sort country ranking based on probability counted for the sentiments analysis
+countryOrder1 = list(rankingOfProb.keys())
+valueOrder1 = list(rankingOfProb.values())
+pc.insertion_sort(valueOrder1, countryOrder1)
+print("\nSorted Ranking of Country (local economic & social situation):")
+print(f"{'No' :<15} {'Country' :<20} Probability")
+print("------------------------------------------------------------------------------------------")
+ranking1 = 1
+for i in range(len(countryOrder1) - 1, -1, -1):
+    print(f"{ranking1 :<15} {countryOrder1[i] :<20} {valueOrder1[i] :>10.4f}")
+    ranking1 = ranking1 + 1
+# print("\nSorted Ranking of Country (local economic & social situation): ", end=" ")
+# print(*countryOrder1)
+# Sorted the country based on the total distance travelled
+# Take into account of the diesel price in each country to calculate the running cost of logistics
+dieselPrice = {'Japan': 4.74, 'Taiwan': 4.08, 'United States': 6.62, 'Singapore': 9.27, 'Malaysia': 2.15}
+deliveryRate = pc.lowest_optimal_delivery(countryOptDist, dieselPrice)
+countryOrder2 = list(deliveryRate.keys())
+valueOrder2 = list(deliveryRate.values())
+pc.insertion_sort(valueOrder2, countryOrder2)
+ranking2 = 1
+print("\nSorted Ranking of Country (running cost of logistic):")
+print(f"{'No' :<15} {'Country' :<20} Delivery Fee (RM)")
+print("------------------------------------------------------------------------------------------")
+for i in range(len(countryOrder2) - 1, -1, -1):
+    print(f"{ranking2 :<15} {countryOrder2[i] :<20} {valueOrder2[i] :>10.2f}")
+    ranking2 = ranking2 + 1
+# print("\nSorted delivery rate: ", end=" ")
+# print(*valueOrder2)
+# Sort the country from the least recommended to the most recommended country to have expansion (sentiment analysis, running cost of logistics)
+total_delivery = sum(valueOrder2)
+recommended_country = pc.prob_country_recommended(rankingOfProb, total_delivery, deliveryRate)
+countryOrder3 = list(recommended_country.keys())
+valueOrder3 = list(recommended_country.values())
+pc.insertion_sort(valueOrder3, countryOrder3)
+ranking3 = 1
+print("\nSorted Final Ranking of Countries from the most recommended to the least recommended to have an expansion:")
+print(f"{'No' :<15} {'Country' :<20} Probability")
+print("------------------------------------------------------------------------------------------")
+for i in range(len(countryOrder3) - 1, -1, -1):
+    print(f"{ranking3 :<15} {countryOrder3[i] :<20} {valueOrder3[i] :>10.4f}")
+    ranking3 = ranking3 + 1
+# print("\nSorted Final Ranking of Countries from the least recommended to the most recommended to have an expansion:", end=" ")
+# print(*countryOrder3)
+
+# ........................................................... Question 1 Plotly Dash Graphs ..........................................
+print("\n\n")
 plotlyDash.build_csv_file(rank)
 plotlyDash.build()
+
+# ........................................................... End of project codes .................................................
+print("\n\n")
+
+# print("\nSorted Ranking of Country (local economic & social situation):")
+# print(f"{'No' :<25} {'Country' :<40} Probability")
+# print(*countryName)
