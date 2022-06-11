@@ -226,15 +226,12 @@ countryOrder1 = list(rankingOfProb.keys())
 valueOrder1 = list(rankingOfProb.values())
 pc.insertion_sort(valueOrder1, countryOrder1)
 print("\nSorted Ranking of Country (local economic & social situation):")
-print(f"{'No' :<15} {'Country' :<20} Probability")
+print(f"{'No' :<10} {'Country' :<15} Probability")
 print("------------------------------------------------------------------------------------------")
 ranking1 = 1
 for i in range(len(countryOrder1) - 1, -1, -1):
-    print(f"{ranking1 :<15} {countryOrder1[i] :<20} {valueOrder1[i] :>10.4f}")
+    print(f"{ranking1 :<10} {countryOrder1[i] :<15} {valueOrder1[i] :>8.4f}")
     ranking1 = ranking1 + 1
-# print("\nSorted Ranking of Country (local economic & social situation): ", end=" ")
-# print(*countryOrder1)
-# Sorted the country based on the total distance travelled
 # Take into account of the diesel price in each country to calculate the running cost of logistics
 dieselPrice = {'Japan': 4.74, 'Taiwan': 4.08, 'United States': 6.62, 'Singapore': 9.27, 'Malaysia': 2.15}
 deliveryRate = pc.lowest_optimal_delivery(countryOptDist, dieselPrice)
@@ -243,13 +240,11 @@ valueOrder2 = list(deliveryRate.values())
 pc.insertion_sort(valueOrder2, countryOrder2)
 ranking2 = 1
 print("\nSorted Ranking of Country (running cost of logistic):")
-print(f"{'No' :<15} {'Country' :<20} Delivery Fee (RM)")
+print(f"{'No' :<10} {'Country' :<15} Delivery Fee (Distance travelled*Diesel Price)")
 print("------------------------------------------------------------------------------------------")
 for i in range(len(countryOrder2) - 1, -1, -1):
-    print(f"{ranking2 :<15} {countryOrder2[i] :<20} {valueOrder2[i] :>10.2f}")
+    print(f"{ranking2 :<10} {countryOrder2[i] :<15} {'RM ': >5} {valueOrder2[i] :.2f}")
     ranking2 = ranking2 + 1
-# print("\nSorted delivery rate: ", end=" ")
-# print(*valueOrder2)
 # Sort the country from the least recommended to the most recommended country to have expansion (sentiment analysis, running cost of logistics)
 total_delivery = sum(valueOrder2)
 recommended_country = pc.prob_country_recommended(rankingOfProb, total_delivery, deliveryRate)
@@ -258,13 +253,12 @@ valueOrder3 = list(recommended_country.values())
 pc.insertion_sort(valueOrder3, countryOrder3)
 ranking3 = 1
 print("\nSorted Final Ranking of Countries from the most recommended to the least recommended to have an expansion:")
-print(f"{'No' :<15} {'Country' :<20} Probability")
+print(f"{'No' :<10} {'Country' :<15} Probability")
 print("------------------------------------------------------------------------------------------")
 for i in range(len(countryOrder3) - 1, -1, -1):
-    print(f"{ranking3 :<15} {countryOrder3[i] :<20} {valueOrder3[i] :>10.4f}")
+    print(f"{ranking3 :<10} {countryOrder3[i] :<15} {valueOrder3[i] :>8.4f}")
     ranking3 = ranking3 + 1
-# print("\nSorted Final Ranking of Countries from the least recommended to the most recommended to have an expansion:", end=" ")
-# print(*countryOrder3)
+print("In conclusion, "+countryOrder3[len(countryOrder3)-1]+" is the best recommended for Moonbucks to have its branch expansion")
 
 # ........................................................... Question 1 Plotly Dash Graphs ..........................................
 print("\n\n")
