@@ -137,8 +137,6 @@ def mapPlotter(pathlist, centrelist, des, nation, optdis):
                      lng=float(waypoints[desIndx].split(", ")[1]),
                      label=str(desIndx+1))
 
-        originAdd = gmaps.reverse_geocode((float(waypoints[desIndx - 1].split(", ")[0]), float(waypoints[desIndx - 1].split(", ")[1])))[0][
-            "formatted_address"]
         desAdd = gmaps.reverse_geocode((float(waypoints[desIndx].split(", ")[0]), float(waypoints[desIndx].split(", ")[1])))[0][
             "formatted_address"]
         print("Stop:", stopCount,
@@ -148,14 +146,11 @@ def mapPlotter(pathlist, centrelist, des, nation, optdis):
 
     gmap1.directions(origin=(float(waypoints[len(waypoints) - 1].split(", ")[0]), float(waypoints[len(waypoints) - 1].split(", ")[1])),
                      destination=(float(centrelist.split(", ")[0]), float(centrelist.split(", ")[1])))
-    originAdd = gmaps.reverse_geocode((float(waypoints[len(waypoints) - 1].split(", ")[0]), float(waypoints[len(waypoints) - 1].split(", ")[1])))[0][
-        "formatted_address"]
     desAdd = gmaps.reverse_geocode((float(centrelist.split(", ")[0]), float(centrelist.split(", ")[1])))[0][
         "formatted_address"]
     print("Stop:", stopCount,
           "==> ",
           desAdd)
-    stopCount = stopCount + 1
     print("Optimized distance (km): ", "%.1f" % optdis)
     print()
 
