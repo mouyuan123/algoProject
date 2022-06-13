@@ -122,8 +122,8 @@ def build():
                                y=dFrame['Singapore'],
                                name='Singapore'))
             d.add_trace(go.Bar(x=sentimentList,
-                               y=dFrame['United State'],
-                               name='United State'))
+                               y=dFrame['United States'],
+                               name='United States'))
             d.add_trace(go.Bar(x=sentimentList,
                                y=dFrame['Japan'],
                                name='Japan'))
@@ -132,24 +132,24 @@ def build():
                                name='Taiwan'))
             return updateLayout(d)
         elif country == 'All (Pie Chart)':
-            positiveWords = dataFrame['Malaysia'][sentimentList[0]] + dataFrame['Singapore'][sentimentList[0]] + dataFrame['United State'][sentimentList[0]] + dataFrame['Japan'][sentimentList[0]] + dataFrame['Taiwan'][sentimentList[0]]
-            negativeWords = dataFrame['Malaysia'][sentimentList[1]] + dataFrame['Singapore'][sentimentList[1]] + dataFrame['United State'][sentimentList[1]] + dataFrame['Japan'][sentimentList[1]] + dataFrame['Taiwan'][sentimentList[1]]
-            neutralWords = dataFrame['Malaysia'][sentimentList[2]] + dataFrame['Singapore'][sentimentList[2]] + dataFrame['United State'][sentimentList[2]] + dataFrame['Japan'][sentimentList[2]] + dataFrame['Taiwan'][sentimentList[2]]
+            positiveWords = dataFrame['Malaysia'][sentimentList[0]] + dataFrame['Singapore'][sentimentList[0]] + dataFrame['United States'][sentimentList[0]] + dataFrame['Japan'][sentimentList[0]] + dataFrame['Taiwan'][sentimentList[0]]
+            negativeWords = dataFrame['Malaysia'][sentimentList[1]] + dataFrame['Singapore'][sentimentList[1]] + dataFrame['United States'][sentimentList[1]] + dataFrame['Japan'][sentimentList[1]] + dataFrame['Taiwan'][sentimentList[1]]
+            neutralWords = dataFrame['Malaysia'][sentimentList[2]] + dataFrame['Singapore'][sentimentList[2]] + dataFrame['United States'][sentimentList[2]] + dataFrame['Japan'][sentimentList[2]] + dataFrame['Taiwan'][sentimentList[2]]
             pie = pd.DataFrame(
-                {"countryName": ['Malaysia', 'Singapore', 'United States', 'Japan', 'Taiwan'],
+                {"countryName": ['Malaysia', 'Singapore', 'United Statess', 'Japan', 'Taiwan'],
                     "value1": [dataFrame['Malaysia'][sentimentList[0]],
                                      dataFrame['Singapore'][sentimentList[0]],
-                                     dataFrame['United State'][sentimentList[0]],
+                                     dataFrame['United States'][sentimentList[0]],
                                      dataFrame['Japan'][sentimentList[0]],
                                      dataFrame['Taiwan'][sentimentList[0]]],
                     "value2": [dataFrame['Malaysia'][sentimentList[1]],
                                     dataFrame['Singapore'][sentimentList[1]],
-                                    dataFrame['United State'][sentimentList[1]],
+                                    dataFrame['United States'][sentimentList[1]],
                                     dataFrame['Japan'][sentimentList[1]],
                                     dataFrame['Taiwan'][sentimentList[1]]],
                     "value3": [dataFrame['Malaysia'][sentimentList[2]],
                                 dataFrame['Singapore'][sentimentList[2]],
-                                dataFrame['United State'][sentimentList[2]],
+                                dataFrame['United States'][sentimentList[2]],
                                 dataFrame['Japan'][sentimentList[2]],
                                 dataFrame['Taiwan'][sentimentList[2]]]
                  })
@@ -193,7 +193,7 @@ def build():
                         {'label': 'All (Pie Chart)', 'value': 'All (Pie Chart)'},
                         {'label': 'Malaysia', 'value': 'Malaysia'},
                         {'label': 'Singapore', 'value': 'Singapore'},
-                        {'label': 'United State', 'value': 'United State'},
+                        {'label': 'United States', 'value': 'United States'},
                         {'label': 'Japan', 'value': 'Japan'},
                         {'label': 'Taiwan', 'value': 'Taiwan'}
                     ],
@@ -207,15 +207,15 @@ def build():
             ])
         elif tab == 'Comparison':
             analysis = pd.DataFrame(
-                {'country': ['Malaysia', 'Singapore', 'United State', 'Japan', 'Taiwan'],
+                {'country': ['Malaysia', 'Singapore', 'United States', 'Japan', 'Taiwan'],
                  'length of words': [dataFrame['Malaysia']['Length of words'],
                                      dataFrame['Singapore']['Length of words'],
-                                     dataFrame['United State']['Length of words'],
+                                     dataFrame['United States']['Length of words'],
                                      dataFrame['Japan']['Length of words'],
                                      dataFrame['Taiwan']['Length of words']],
                  "differences": [dataFrame['Malaysia'][sentimentList[0]] - dataFrame['Malaysia'][sentimentList[1]],
                                  dataFrame['Singapore'][sentimentList[0]] - dataFrame['Singapore'][sentimentList[1]],
-                                 dataFrame['United State'][sentimentList[0]] - dataFrame['United State'][sentimentList[1]],
+                                 dataFrame['United States'][sentimentList[0]] - dataFrame['United States'][sentimentList[1]],
                                  dataFrame['Japan'][sentimentList[0]] - dataFrame['Japan'][sentimentList[1]],
                                  dataFrame['Taiwan'][sentimentList[0]] - dataFrame['Taiwan'][sentimentList[1]]]
                  })

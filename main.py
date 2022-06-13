@@ -206,7 +206,7 @@ countryOptDist = {}  # Store the country with its shortest distance to be used i
 for i in range(len(targetFiles)):
     data = pd.read_excel(targetFiles[i])
     des = data.Coordinates
-    API_key = 'AIzaSyBAeA4z6IoKc5uU_--TTQ0HWBHCFvDpf5g'
+    API_key = 'AIzaSyAQrB5JB26LImIMUIWYkYNyDaWVbvudRoc'
     location, routeList = distributionCentre.findCentre(des, API_key, data)
     finalResult.append(location)  # Store all resulting distribution centre in each country into a list
     optPath, optDis = distributionCentre.find_shortest_path(routeList, des, location.index)
