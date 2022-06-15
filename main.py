@@ -206,7 +206,7 @@ countryOptDist = {}  # Store the country with its shortest distance to be used i
 for i in range(len(targetFiles)):
     data = pd.read_excel(targetFiles[i])
     des = data.Coordinates
-    API_key = 'AIzaSyAQrB5JB26LImIMUIWYkYNyDaWVbvudRoc'
+    API_key = 'AIzaSyDEX3h2G60Jmz5aqAVGsqaggwKhic5dlZY'
     location, routeList = distributionCentre.findCentre(des, API_key, data)
     finalResult.append(location)  # Store all resulting distribution centre in each country into a list
     optPath, optDis = distributionCentre.find_shortest_path(routeList, des, location.index)
@@ -216,7 +216,7 @@ print("\nAll centres coordinates:")
 print(f"{'Country' :<25} {'Distribution Centre Coordinates' :<40} Total Shortest Distance")
 print("------------------------------------------------------------------------------------------")
 for a in finalResult:
-    print(f"{a.nation :<25} {a.coor :<40} {a.vecD :>13}km")
+    print(f"{a.nation :<25} {a.coor :<40} {a.vecD :>13.2f}km")
 
 # ...................................................... Question 3 .......................................................
 pc = probabilityCalculation.probabilityCalculation()
@@ -245,9 +245,21 @@ print("-------------------------------------------------------------------------
 for i in range(len(countryOrder2) - 1, -1, -1):
     print(f"{ranking2 :<10} {countryOrder2[i] :<15} {'RM ': >5} {valueOrder2[i] :.2f}")
     ranking2 = ranking2 + 1
-# Sort the country from the least recommended to the most recommended country to have expansion (sentiment analysis, running cost of logistics)
+# Sort the country ranking based on probability of the lowest optimal delivery
 total_delivery = sum(valueOrder2)
-recommended_country = pc.prob_country_recommended(rankingOfProb, total_delivery, deliveryRate)
+ranking_lowest_optimal_delivery = pc.prob_lowest_optimal_delivery(countryOptDist, deliveryRate, total_delivery)
+countryOrder4 = list(ranking_lowest_optimal_delivery.keys())
+valueOrder4 = list(ranking_lowest_optimal_delivery.values())
+pc.insertion_sort(valueOrder4, countryOrder4)
+ranking4 = 1
+print("\nSorted Ranking of Country (lowest optimal delivery):")
+print(f"{'No' :<10} {'Country' :<15} Probability")
+print("------------------------------------------------------------------------------------------")
+for i in range(len(countryOrder4) - 1, -1, -1):
+    print(f"{ranking4 :<10} {countryOrder4[i] :<15} {valueOrder4[i] :>8.4f}")
+    ranking4 = ranking4 + 1
+# Sort the country from the least recommended to the most recommended country to have expansion (sentiment analysis, running cost of logistics)
+recommended_country = pc.prob_country_recommended(rankingOfProb, ranking_lowest_optimal_delivery)
 countryOrder3 = list(recommended_country.keys())
 valueOrder3 = list(recommended_country.values())
 pc.insertion_sort(valueOrder3, countryOrder3)
@@ -261,15 +273,21 @@ for i in range(len(countryOrder3) - 1, -1, -1):
 # Provide a final ranking line chart for better visualization
 xAxis = list(rank.keys())
 yAxisSentiment = [0] * len(xAxis)
+yAxisLowestOptimal = [0] * len(xAxis)
 yAxisFinalProb = [0] * len(xAxis)
 for i in range(len(xAxis)):
     yAxisSentiment[i] = rankingOfProb[xAxis[i]]
+for i in range(len(xAxis)):
+    yAxisLowestOptimal[i] = ranking_lowest_optimal_delivery[xAxis[i]]
 for i in range(len(xAxis)):
     yAxisFinalProb[i] = recommended_country[xAxis[i]]
 fig = go.Figure()
 # Final probability based on sentiment analysis
 fig.add_trace(go.Scatter(x=xAxis, y=yAxisSentiment, name='Sentiment', mode='lines+markers',
                          line=dict(color='royalblue')))
+# Final probability based on lowest optimal delivery cost
+fig.add_trace(go.Scatter(x=xAxis, y=yAxisLowestOptimal, name='Delivery', mode='lines+markers',
+                         line=dict(color='#AB63FA')))
 # Final probability based on sentiment analysis & lowest optimal delivery cost
 fig.add_trace(go.Scatter(x=xAxis, y=yAxisFinalProb, name='Final', mode='lines+markers',
                          line=dict(color='firebrick')))
