@@ -162,7 +162,7 @@ def build():
             fig.update_traces(hole=.4, hoverinfo="label+value")
 
             fig.update_layout(
-                title_text="Percentage of Positive Words ("+str(positiveWords)+"), Negative Words ("+str(negativeWords)+"), and Neutral Words Words ("+str(neutralWords)+") For Each Country",
+                title_text="Percentage of Positive Words ("+str(positiveWords)+"), Negative Words ("+str(negativeWords)+"), and Neutral Words ("+str(neutralWords)+") For Each Country",
                 # Add title in the center of the donut pies.
                 annotations=[dict(text='Positive words', x=0.10, y=0.5, font_size=15, showarrow=False),
                              dict(text='Negative words', x=0.50, y=0.5, font_size=15, showarrow=False),
