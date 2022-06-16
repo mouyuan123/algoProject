@@ -114,7 +114,7 @@ negativeWordsList = listofWords("NEGATIVE", "words\\Negative.txt")
 neutralWordsList = listofWords("NEUTRAL", "words\\Neutral.txt")
 # Build a dictionary to store the overall number of positive and negative words of each country for ranking
 # The index 0 store the amount of positive words & the index 1 store the amount of negative words
-# the index 2 store the amount of neutral words & the index 3 store the length of articles (used for graph implementation)
+# the index 2 store the amount of neutral words & the index 3 store the length of articles
 rank = {"Malaysia": [0, 0, 0, 0],
         "United States": [0, 0, 0, 0],
         "Singapore": [0, 0, 0, 0],
@@ -132,6 +132,7 @@ articles = [
      "https://www.malaymail.com/news/malaysia/2022/06/03/finance-ministry-tax-revenue-reforms-key-to-socio-economic-resilience/10520"],
     ["Malaysia",
      "https://www.malaymail.com/news/malaysia/2022/01/04/socio-economic-research-centre-a-better-year-in-2022-for-malaysian-economy/2032924"],
+    # ["Malaysia", "https://www.worldbank.org/en/news/press-release/2019/07/01/malaysias-economy-to-see-continued-growth-but-downside-risks-are-elevated"],
 
     ["Singapore",
      "https://www.lowyinstitute.org/publications/getting-singapore-shape-economic-challenges-and-how-meet-them-0"],
@@ -148,6 +149,7 @@ articles = [
      "https://www.cnbc.com/2021/07/23/the-rapid-growth-the-us-economy-has-seen-is-about-to-hit-a-wall.html"],
     ["United States", "https://www.focus-economics.com/countries/united-states"],
     ["United States", "https://time.com/6130525/economy-doing-well-why-does-it-feel-like-a-disaster/"],
+    # ["United States", "https://www.bbc.com/news/business-61254160"],
     ["United States", "https://www.mercatus.org/publications/regulation/economic-situation-march-2022"],
 
     ["Taiwan", "https://www.taiwannews.com.tw/en/news/4530057"],
