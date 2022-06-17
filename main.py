@@ -130,9 +130,9 @@ articles = [
     ["Malaysia", "https://www.theedgemarkets.com/article/oecd-forecasts-malaysia-economy-grow-6-2022"],
     ["Malaysia",
      "https://www.malaymail.com/news/malaysia/2022/06/03/finance-ministry-tax-revenue-reforms-key-to-socio-economic-resilience/10520"],
-    ["Malaysia",
-     "https://www.malaymail.com/news/malaysia/2022/01/04/socio-economic-research-centre-a-better-year-in-2022-for-malaysian-economy/2032924"],
-    # ["Malaysia", "https://www.worldbank.org/en/news/press-release/2019/07/01/malaysias-economy-to-see-continued-growth-but-downside-risks-are-elevated"],
+    # ["Malaysia",
+    #  "https://www.malaymail.com/news/malaysia/2022/01/04/socio-economic-research-centre-a-better-year-in-2022-for-malaysian-economy/2032924"],
+    ["Malaysia", "https://www.worldbank.org/en/news/press-release/2019/07/01/malaysias-economy-to-see-continued-growth-but-downside-risks-are-elevated"],
 
     ["Singapore",
      "https://www.lowyinstitute.org/publications/getting-singapore-shape-economic-challenges-and-how-meet-them-0"],
@@ -149,8 +149,8 @@ articles = [
      "https://www.cnbc.com/2021/07/23/the-rapid-growth-the-us-economy-has-seen-is-about-to-hit-a-wall.html"],
     ["United States", "https://www.focus-economics.com/countries/united-states"],
     ["United States", "https://time.com/6130525/economy-doing-well-why-does-it-feel-like-a-disaster/"],
-    # ["United States", "https://www.bbc.com/news/business-61254160"],
-    ["United States", "https://www.mercatus.org/publications/regulation/economic-situation-march-2022"],
+    ["United States", "https://www.bbc.com/news/business-61254160"],
+    # ["United States", "https://www.mercatus.org/publications/regulation/economic-situation-march-2022"],
 
     ["Taiwan", "https://www.taiwannews.com.tw/en/news/4530057"],
     ["Taiwan", "https://focustaiwan.tw/business/202201240020"],
@@ -196,7 +196,7 @@ print(
 
 # Files of every targeted country to expand the business
 targetFiles = [r'Moonbucks Expand Targets\MY.xlsx',
-               r'Moonbucks Expand Targets\US.xlsx',
+               r'Moonbucks Expand Targets\USEdited.xlsx',
                r'Moonbucks Expand Targets\SG.xlsx',
                r'Moonbucks Expand Targets\TW.xlsx',
                r'Moonbucks Expand Targets\JP.xlsx'
@@ -304,7 +304,7 @@ print("In conclusion, " + countryOrder3[
 
 # ........................................................... Question 1 Plotly Dash Graphs ..........................................
 print("\n\n")
-plotlyDash.build_csv_file(rank)
+plotlyDash.build_dataFrame(rank)
 plotlyDash.build()
 
 # ........................................................... End of project codes .................................................

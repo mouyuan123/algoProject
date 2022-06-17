@@ -10,15 +10,9 @@ sentimentList = ["Positive", "Negative", "Neutral"]
 
 
 # Create .csv file of positive, negative and neutral words for each country using pandas
-def build_csv_file(countryDict):
-    fileName = "data.csv"
-    # Each column name is equivalent to "country name"
+def build_dataFrame(countryDict):
     for i, j in countryDict.items():
         dataFrame[i] = {sentimentList[0]: j[0], sentimentList[1]: j[1], sentimentList[2]: j[2], 'Length of words': j[3]}
-    df = pd.DataFrame(dataFrame)
-    #  Only want to create the file one time
-    if not os.path.exists("graphAnalysis\\" + fileName):
-        df.to_csv("graphAnalysis\\" + fileName, index=False)
 
 
 def updateLayout(figure):
