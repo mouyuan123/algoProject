@@ -36,3 +36,4 @@ class Article:
     def toString(self):
         print(
             "Article: %d%3s Country: %s%3s" % (Article.articleCount, " ", self.country, " "))
+
